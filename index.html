@@ -951,9 +951,18 @@ function csvParseRow(line) {
 // export CSV
 $('btnExportCSV').onclick = () => {
   if (expenses.length === 0) { alert('沒有資料可匯出'); return; }
+  // Settings header lines
+  const configLines = [
+    '#付款人: ' + payers.join(','),
+    '#付款人人數: ' + JSON.stringify(payerHeads),
+    '#群組: ' + JSON.stringify(payerGroups),
+    '#預付: ' + JSON.stringify(payerPrepaid),
+    '#卡片/支付: ' + JSON.stringify(paymentMethods),
+    '#旅遊人數: ' + totalPeople,
+  ];
   const header = ['id','日期','分類','項目','外幣金額','幣別','匯率','TWD','支付方式','卡片/支付','付款人'];
   const rows = expenses.map(e => [e.id, e.date, e.category, e.desc, e.amount, e.currency, e.rate, e.twd, e.payment, e.paymentMethod || '', e.payer || '我'].map(csvCell));
-  const csv = '\uFEFF' + header.join(',') + '\n' + rows.map(r => r.join(',')).join('\n');
+  const csv = '\uFEFF' + configLines.join('\n') + '\n' + header.join(',') + '\n' + rows.map(r => r.join(',')).join('\n');
   // Download file
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const a = document.createElement('a');
@@ -968,12 +977,37 @@ $('btnExportCSV').onclick = () => {
 
 // CSV import logic (shared between file upload and paste)
 function importCsvText(text) {
-  const lines = text.replace(/\r\n?/g, '\n').split('\n').filter(l => l.trim());
+  const rawLines = text.replace(/\r\n?/g, '\n').split('\n');
+  // Parse config lines (prefix #) and find data header
+  const lines = [];
+  let headerIdx = -1;
+  for (let i = 0; i < rawLines.length; i++) {
+    const l = rawLines[i].trim();
+    if (!l) continue;
+    if (l.startsWith('#')) {
+      const colon = l.indexOf(':');
+      if (colon > 0) {
+        const key = l.slice(1, colon).trim();
+        const val = l.slice(colon + 1).trim();
+        if (key === '付款人' && val) {
+          val.split(',').forEach(p => { if (p && !payers.includes(p)) { payers.push(p); payerHeads[p] = 1; payerPrepaid[p] = { amount: 0, currency: 'TWD', rate: 1 }; }});
+        } else if (key === '付款人人數') { try { Object.entries(JSON.parse(val)).forEach(([k, v]) => { payerHeads[k] = v; }); } catch {} 
+        } else if (key === '群組') { try { Object.entries(JSON.parse(val)).forEach(([k, v]) => { payerGroups[k] = v; }); } catch {} 
+        } else if (key === '預付') { try { Object.entries(JSON.parse(val)).forEach(([k, v]) => { payerPrepaid[k] = v; }); } catch {} 
+        } else if (key === '卡片/支付') { try { paymentMethods = JSON.parse(val); } catch {} 
+        } else if (key === '旅遊人數') { totalPeople = parseInt(val, 10) || 1; }
+      }
+      continue;
+    }
+    if (l.startsWith('id,') || l.startsWith('日期,')) { headerIdx = lines.length; }
+    lines.push(l);
+  }
   if (lines.length < 2) { alert('CSV 格式錯誤或無資料'); return; }
-  const header = csvParseRow(lines[0]);
+  const dataStart = headerIdx >= 0 ? headerIdx + 1 : 1;
+  const header = csvParseRow(lines[headerIdx >= 0 ? headerIdx : 0]);
   const idIdx = header.indexOf('id');
   let added = 0, skipped = 0;
-  for (let i = 1; i < lines.length; i++) {
+  for (let i = dataStart; i < lines.length; i++) {
     const row = csvParseRow(lines[i]);
     if (row.length < 5) continue;
     const id = idIdx >= 0 && row[idIdx] ? row[idIdx] : null;
@@ -1003,8 +1037,11 @@ function importCsvText(text) {
   save();
   savePayers();
   savePayerHeads();
+  savePayerGroups();
   savePayerPrepaid();
   savePaymentMethods();
+  saveTotalPeople();
+  renderTotalPeople();
   renderPayerSelects();
   renderPaymentMethodSelects();
   populateFilters();
