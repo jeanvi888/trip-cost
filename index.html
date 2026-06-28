@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>出國記帳</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f2f5; color: #1a1a2e; padding: 16px; }
+.container { max-width: 960px; margin: 0 auto; }
+h1 { font-size: 1.5rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+h1 small { font-size: 0.8rem; font-weight: normal; color: #666; }
+
+/* card */
+.card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+/* form */
+.form-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.form-row:last-child { margin-bottom: 0; }
+.form-group { flex: 1; min-width: 120px; }
+.form-group label { display: block; font-size: 0.75rem; color: #666; margin-bottom: 4px; font-weight: 600; }
+.form-group input, .form-group select { width: 100%; padding: 8px 10px; border: 1px solid #d9d9d9; border-radius: 8px; font-size: 0.875rem; outline: none; transition: border-color 0.2s; background: #fff; }
+.form-group input:focus, .form-group select:focus { border-color: #4f46e5; box-shadow: 0 0 0 2px rgba(79,70,229,0.15); }
+
+/* buttons */
+.btn { padding: 8px 20px; border: none; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.btn-primary { background: #4f46e5; color: #fff; }
+.btn-primary:hover { background: #4338ca; }
+.btn-danger { background: #fee2e2; color: #dc2626; }
+.btn-danger:hover { background: #fecaca; }
+.btn-sm { padding: 4px 10px; font-size: 0.75rem; }
+.btn-outline { background: transparent; border: 1px solid #d9d9d9; color: #666; }
+.btn-outline:hover { border-color: #4f46e5; color: #4f46e5; }
+.btn-group { display: flex; gap: 8px; align-items: flex-end; }
+
+/* summary */
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin-bottom: 0; }
+.summary-item { text-align: center; padding: 12px 8px; background: #f8f9ff; border-radius: 10px; }
+.summary-item .label { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+.summary-item .value { font-size: 1.25rem; font-weight: 700; margin-top: 4px; }
+.summary-item .value.blue { color: #4f46e5; }
+.summary-item .value.green { color: #059669; }
+.summary-item .value.red { color: #dc2626; }
+.summary-item .value.orange { color: #d97706; }
+
+/* filters */
+.filter-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.filter-bar .form-group { min-width: 100px; flex: 0 1 auto; }
+.filter-bar .form-group input, .filter-bar .form-group select { padding: 6px 8px; font-size: 0.8rem; }
+
+/* table */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #f0f0f0; white-space: nowrap; }
+th { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+tr:hover td { background: #f8f9ff; }
+td.amt { text-align: right; font-variant-numeric: tabular-nums; }
+td.cur { color: #666; font-size: 0.75rem; }
+td .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; }
+.tag-food { background: #fef3c7; color: #92400e; }
+.tag-transport { background: #dbeafe; color: #1e40af; }
+.tag-accommodation { background: #e0e7ff; color: #3730a3; }
+.tag-shopping { background: #fce7f3; color: #9d174d; }
+.tag-entertainment { background: #d1fae5; color: #065f46; }
+.tag-meal { background: #fff7ed; color: #9a3412; }
+.tag-other { background: #f3f4f6; color: #374151; }
+td .del-btn { opacity: 0.3; cursor: pointer; background: none; border: none; color: #999; font-size: 1rem; padding: 0 4px; transition: opacity 0.2s; }
+td .del-btn:hover { opacity: 1; color: #dc2626; }
+
+/* category chart */
+.category-bar-wrap { margin-top: 12px; }
+.category-bar { display: flex; height: 24px; border-radius: 6px; overflow: hidden; }
+.category-bar-seg { display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; color: #fff; transition: width 0.3s; min-width: 0; }
+.category-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.category-legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.75rem; }
+.category-legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+/* empty state */
+.empty-state { text-align: center; padding: 40px 16px; color: #999; }
+.empty-state p { margin-top: 8px; font-size: 0.9rem; }
+
+/* modal */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; justify-content: center; align-items: center; }
+.modal-overlay.active { display: flex; }
+.modal { background: #fff; border-radius: 12px; padding: 24px; width: 90%; max-width: 420px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+.modal h2 { font-size: 1.1rem; margin-bottom: 16px; }
+.modal .form-row { margin-bottom: 0; }
+
+/* responsive */
+@media (max-width: 600px) {
+  body { padding: 8px; }
+  .card { padding: 12px; }
+  .form-group { min-width: 100%; }
+  .form-row { flex-wrap: wrap; }
+  .form-row .form-group { flex: 1 1 100% !important; }
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .filter-bar .form-group { min-width: calc(50% - 8px); flex: 1 1 auto; }
+  .btn-group { width: 100%; }
+  .btn-group .btn { flex: 1; }
+  th, td { padding: 6px 4px; font-size: 0.75rem; }
+  .modal { width: 95%; padding: 16px; }
+  .container { margin: 0; }
+}
+</style>
+</head>
+<body>
+<div class="container" id="app">
+  <h1>✈️ 出國記帳 <small id="tripLabel"></small></h1>
+
+  <!-- summary -->
+  <div class="card">
+    <div class="summary-grid">
+      <div class="summary-item"><div class="label">總花費 (TWD)</div><div class="value blue" id="sumTotal">0</div></div>
+      <div class="summary-item"><div class="label">外幣總額</div><div class="value orange" id="sumForeign">0</div></div>
+      <div class="summary-item"><div class="label">筆數</div><div class="value" id="sumCount">0</div></div>
+      <div class="summary-item"><div class="label">日均花費</div><div class="value green" id="sumDaily">0</div></div>
+      <div class="summary-item" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px;">
+        <div class="label">旅遊人數</div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button class="btn btn-sm btn-outline" id="btnPeopleDec" style="padding:2px 8px;font-size:1rem;">−</button>
+          <span id="totalPeople" style="font-size:1.25rem;font-weight:700;min-width:24px;text-align:center;">0</span>
+          <button class="btn btn-sm btn-outline" id="btnPeopleInc" style="padding:2px 8px;font-size:1rem;">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- per-person summary -->
+  <div class="card" id="payerSummaryCard" style="display:none;">
+    <div style="font-size:0.8rem;font-weight:600;margin-bottom:8px;">各人付款統計</div>
+    <div id="payerSummaryContent" style="display:flex;flex-wrap:wrap;gap:12px;"></div>
+  </div>
+
+  <!-- add form -->
+  <div class="card">
+    <div class="form-row">
+      <div class="form-group" style="flex:0 0 80px;">
+        <label>日期</label>
+        <input type="date" id="inputDate">
+      </div>
+      <div class="form-group">
+        <label>分類</label>
+        <select id="inputCategory">
+          <option value="餐飲">餐飲</option>
+          <option value="交通">交通</option>
+          <option value="住宿">住宿</option>
+          <option value="購物">購物</option>
+          <option value="娛樂">娛樂</option>
+          <option value="網路電信">網路電信</option>
+          <option value="手續費">手續費</option>
+          <option value="保險">保險</option>
+          <option value="其他">其他</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex:2;">
+        <label>項目</label>
+        <input type="text" id="inputDesc" placeholder="例如：午餐、地鐵票">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="inputAmount">金額 (外幣)</label>
+        <input type="number" id="inputAmount" step="0.01" min="0" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label>幣別</label>
+        <select id="inputCurrency">
+          <option value="JPY">JPY 日圓</option>
+          <option value="KRW">KRW 韓元</option>
+          <option value="USD">USD 美元</option>
+          <option value="EUR">EUR 歐元</option>
+          <option value="GBP">GBP 英鎊</option>
+          <option value="HKD">HKD 港幣</option>
+          <option value="CNY">CNY 人民幣</option>
+          <option value="SGD">SGD 新加坡幣</option>
+          <option value="THB">THB 泰銖</option>
+          <option value="VND">VND 越南盾</option>
+          <option value="MYR">MYR 馬來幣</option>
+          <option value="AUD">AUD 澳幣</option>
+          <option value="NZD">NZD 紐幣</option>
+          <option value="CAD">CAD 加幣</option>
+          <option value="CHF">CHF 瑞士法郎</option>
+          <option value="PHP">PHP 菲律賓披索</option>
+          <option value="IDR">IDR 印尼盾</option>
+          <option value="TWD">TWD 台幣</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>匯率 (1 外幣 = ? TWD) <span id="rateStatus" style="font-weight:400;color:#999;font-size:0.7rem;"></span></label>
+        <div style="display:flex;gap:4px;">
+          <input type="number" id="inputRate" step="0.0001" min="0" placeholder="自動或手動輸入" style="flex:1;">
+          <button class="btn btn-sm btn-outline" id="btnFetchRate" title="取得即時匯率" style="white-space:nowrap;padding:4px 10px;">🔄 即時匯率</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>支付方式</label>
+        <select id="inputPayment">
+          <option value="現金">現金</option>
+          <option value="信用卡">信用卡</option>
+          <option value="行動支付">行動支付</option>
+          <option value="其他">其他</option>
+        </select>
+      </div>
+      <div class="form-group pm-group" style="min-width:110px;">
+        <label>卡片／支付</label>
+        <div style="display:flex;gap:4px;">
+          <select id="inputPaymentMethod" class="pm-select" style="flex:1;"></select>
+          <button class="btn btn-sm btn-outline" id="btnAddPaymentMethod" title="新增卡片／支付" style="padding:4px 8px;">＋</button>
+        </div>
+      </div>
+      <div class="form-group" style="min-width:90px;">
+        <label>付款人</label>
+        <div style="display:flex;gap:4px;">
+          <select id="inputPayer" class="payer-select" style="flex:1;"></select>
+          <button class="btn btn-sm btn-outline" id="btnAddPayer" title="新增付款人" style="padding:4px 8px;white-space:nowrap;">＋</button>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="btnAdd">＋ 新增</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- filters + export -->
+  <div class="card">
+    <div class="filter-bar">
+      <div class="form-group"><label>搜尋</label><input type="text" id="filterSearch" placeholder="項目、分類..."></div>
+      <div class="form-group"><label>分類</label><select id="filterCategory"><option value="">全部</option><option>餐飲</option><option>交通</option><option>住宿</option><option>購物</option><option>娛樂</option><option>網路電信</option><option>手續費</option><option>保險</option><option>其他</option></select></div>
+      <div class="form-group"><label>幣別</label><select id="filterCurrency"><option value="">全部</option></select></div>
+      <div class="form-group"><label>支付</label><select id="filterPayment"><option value="">全部</option><option>現金</option><option>信用卡</option><option>行動支付</option><option>其他</option></select></div>
+      <div class="form-group"><label>卡片/支付名稱</label><select id="filterPaymentMethod"><option value="">全部</option></select></div>
+      <div class="form-group"><label>付款人</label><select id="filterPayer"><option value="">全部</option></select></div>
+      <button class="btn btn-outline btn-sm" id="btnManagePayers" style="margin-top:auto;">👥 付款人</button>
+      <button class="btn btn-outline btn-sm" id="btnManagePrepaid" style="margin-top:auto;">💰 預付</button>
+      <button class="btn btn-outline btn-sm" id="btnManagePaymentMethods" style="margin-top:auto;">💳 卡片/支付</button>
+      <button class="btn btn-outline btn-sm" id="btnExportCSV">📥 匯出 CSV</button>
+      <button class="btn btn-outline btn-sm" id="btnClearAll">🗑️ 清空</button>
+    </div>
+  </div>
+
+  <!-- category bar -->
+  <div class="card" id="categoryChartCard" style="display:none;">
+    <div style="font-size:0.8rem;font-weight:600;margin-bottom:8px;">各類別佔比</div>
+    <div class="category-bar-wrap">
+      <div class="category-bar" id="categoryBar"></div>
+      <div class="category-legend" id="categoryLegend"></div>
+    </div>
+  </div>
+
+  <!-- expense table -->
+  <div class="card" style="padding:0;">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>日期</th><th>分類</th><th>項目</th><th style="text-align:right;">外幣金額</th><th>幣別</th><th>匯率</th><th style="text-align:right;">TWD</th><th>支付</th><th>付款人</th><th style="width:40px;"></th>
+          </tr>
+        </thead>
+        <tbody id="expenseList"></tbody>
+      </table>
+    </div>
+    <div class="empty-state" id="emptyState">
+      <div style="font-size:2rem;">📋</div>
+      <p>還沒有記帳記錄，開始新增第一筆吧！</p>
+    </div>
+  </div>
+</div>
+
+<!-- edit modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h2>編輯記錄</h2>
+    <div class="form-row">
+      <div class="form-group" style="flex:0 0 80px;"><label>日期</label><input type="date" id="editDate"></div>
+      <div class="form-group"><label>分類</label><select id="editCategory"><option>餐飲</option><option>交通</option><option>住宿</option><option>購物</option><option>娛樂</option><option>網路電信</option><option>手續費</option><option>保險</option><option>其他</option></select></div>
+      <div class="form-group" style="flex:2;"><label>項目</label><input type="text" id="editDesc" placeholder="項目名稱"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label for="editAmount">金額 (外幣)</label><input type="number" id="editAmount" step="0.01" min="0"></div>
+      <div class="form-group"><label>幣別</label><select id="editCurrency"><option value="JPY">JPY 日圓</option><option value="KRW">KRW 韓元</option><option value="USD">USD 美元</option><option value="EUR">EUR 歐元</option><option value="GBP">GBP 英鎊</option><option value="HKD">HKD 港幣</option><option value="CNY">CNY 人民幣</option><option value="SGD">SGD 新加坡幣</option><option value="THB">THB 泰銖</option><option value="VND">VND 越南盾</option><option value="MYR">MYR 馬來幣</option><option value="AUD">AUD 澳幣</option><option value="NZD">NZD 紐幣</option><option value="CAD">CAD 加幣</option><option value="CHF">CHF 瑞士法郎</option><option value="PHP">PHP 菲律賓披索</option><option value="IDR">IDR 印尼盾</option><option value="TWD">TWD 台幣</option></select></div>
+      <div class="form-group"><label>匯率 <span id="editRateStatus" style="font-weight:400;color:#999;font-size:0.7rem;"></span></label><div style="display:flex;gap:4px;"><input type="number" id="editRate" step="0.0001" min="0" style="flex:1;"><button class="btn btn-sm btn-outline" id="btnEditFetchRate" style="white-space:nowrap;padding:4px 10px;">🔄</button></div></div>
+      <div class="form-group"><label>支付</label><select id="editPayment"><option>現金</option><option>信用卡</option><option>行動支付</option><option>其他</option></select></div>
+      <div class="form-group pm-group" style="min-width:110px;"><label>卡片／支付</label><div style="display:flex;gap:4px;"><select id="editPaymentMethod" class="pm-select" style="flex:1;"></select><button class="btn btn-sm btn-outline" id="btnEditAddPaymentMethod" style="padding:4px 8px;">＋</button></div></div>
+      <div class="form-group" style="min-width:90px;"><label>付款人</label><div style="display:flex;gap:4px;"><select id="editPayer" class="payer-select" style="flex:1;"></select><button class="btn btn-sm btn-outline" id="btnEditAddPayer" style="padding:4px 8px;">＋</button></div></div>
+    </div>
+    <div class="form-row" style="justify-content:flex-end;">
+      <button class="btn btn-outline" id="btnEditCancel">取消</button>
+      <button class="btn btn-primary" id="btnEditSave">儲存</button>
+    </div>
+  </div>
+</div>
+
+<!-- payer management modal -->
+<div class="modal-overlay" id="payerModal">
+  <div class="modal" style="max-width:440px;">
+    <h2>管理付款人</h2>
+    <div id="payerList" style="margin-bottom:16px;"></div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-outline" id="btnPayerModalAdd" style="flex:1;">＋ 新增</button>
+      <button class="btn btn-primary" id="btnPayerModalClose" style="flex:1;">完成</button>
+    </div>
+  </div>
+</div>
+
+<!-- prepaid management modal -->
+<div class="modal-overlay" id="prepaidModal">
+  <div class="modal" style="max-width:440px;">
+    <h2>管理預付代墊款</h2>
+    <div id="prepaidList" style="margin-bottom:16px;"></div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-primary" id="btnPrepaidModalClose" style="flex:1;">完成</button>
+    </div>
+  </div>
+</div>
+
+<!-- payment method management modal -->
+<div class="modal-overlay" id="pmModal">
+  <div class="modal" style="max-width:400px;">
+    <h2>管理卡片／支付方式</h2>
+    <div style="margin-bottom:12px;">
+      <div class="form-group" style="min-width:auto;">
+        <label>類型</label>
+        <select id="pmModalType" style="width:100%;">
+          <option value="信用卡">信用卡</option>
+          <option value="行動支付">行動支付</option>
+        </select>
+      </div>
+    </div>
+    <div id="pmList" style="margin-bottom:16px;"></div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-outline" id="btnPmModalAdd" style="flex:1;">＋ 新增</button>
+      <button class="btn btn-primary" id="btnPmModalClose" style="flex:1;">完成</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'travel_expenses';
+const PAYERS_KEY = 'travel_payers';
+const PAYER_HEADS_KEY = 'travel_payer_heads';
+const PAYER_GROUPS_KEY = 'travel_payer_groups';
+const PAYER_PREPAID_KEY = 'travel_payer_prepaid';
+const PAYMENT_METHODS_KEY = 'travel_payment_methods';
+const PEOPLE_KEY = 'travel_total_people';
+let expenses = [];
+let payers = [];
+let payerHeads = {};
+let payerGroups = {}; // { '小明': '旅伴A', '小華': '旅伴A' }
+let payerPrepaid = {}; // { '我': 50000, '旅伴A': 20000 }
+let paymentMethods = [];
+let totalPeople = 1;
+let editingId = null;
+
+const DEFAULT_PAYMENT_METHODS = [
+  { type: '行動支付', name: 'Line Pay' },
+  { type: '行動支付', name: 'Apple Pay' },
+  { type: '行動支付', name: '街口' },
+  { type: '行動支付', name: '西瓜卡' },
+];
+
+function loadPayers() {
+  try {
+    const raw = localStorage.getItem(PAYERS_KEY);
+    payers = raw ? JSON.parse(raw) : [];
+  } catch { payers = []; }
+  if (payers.length === 0) payers = ['我', '旅伴 A'];
+}
+function savePayers() { localStorage.setItem(PAYERS_KEY, JSON.stringify(payers)); }
+
+function loadPayerHeads() {
+  try {
+    const raw = localStorage.getItem(PAYER_HEADS_KEY);
+    payerHeads = raw ? JSON.parse(raw) : {};
+  } catch { payerHeads = {}; }
+  payers.forEach(p => { if (!payerHeads[p]) payerHeads[p] = 1; });
+}
+function savePayerHeads() { localStorage.setItem(PAYER_HEADS_KEY, JSON.stringify(payerHeads)); }
+
+function loadPayerGroups() {
+  try { const raw = localStorage.getItem(PAYER_GROUPS_KEY); payerGroups = raw ? JSON.parse(raw) : {}; } catch { payerGroups = {}; }
+}
+function savePayerGroups() { localStorage.setItem(PAYER_GROUPS_KEY, JSON.stringify(payerGroups)); }
+
+function loadPayerPrepaid() {
+  try { const raw = localStorage.getItem(PAYER_PREPAID_KEY); payerPrepaid = raw ? JSON.parse(raw) : {}; } catch { payerPrepaid = {}; }
+  payers.forEach(p => {
+    const v = payerPrepaid[p];
+    if (!v) payerPrepaid[p] = { amount: 0, currency: 'TWD', rate: 1 };
+    else if (typeof v === 'number') payerPrepaid[p] = { amount: v, currency: 'TWD', rate: 1 };
+  });
+}
+function savePayerPrepaid() { localStorage.setItem(PAYER_PREPAID_KEY, JSON.stringify(payerPrepaid)); }
+function getPrepaidTwd(name) {
+  const pp = payerPrepaid[name];
+  if (!pp) return 0;
+  return (pp.amount || 0) * (pp.rate || 1);
+}
+
+function totalHeadcount() {
+  return payers.reduce((s, p) => s + (payerHeads[p] || 1), 0);
+}
+
+function renderPayerSelects() {
+  const opts = payers.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
+  document.querySelectorAll('.payer-select').forEach(sel => {
+    const cur = sel.value;
+    sel.innerHTML = opts;
+    if (cur && payers.includes(cur)) sel.value = cur;
+  });
+}
+
+// Payment methods
+function loadPaymentMethods() {
+  try {
+    const raw = localStorage.getItem(PAYMENT_METHODS_KEY);
+    paymentMethods = raw ? JSON.parse(raw) : [];
+  } catch { paymentMethods = []; }
+  if (paymentMethods.length === 0) paymentMethods = DEFAULT_PAYMENT_METHODS.map(m => ({ ...m }));
+  // One-time migration: ensure "西瓜卡" exists
+  if (!paymentMethods.some(m => m.type === '行動支付' && m.name === '西瓜卡')) {
+    paymentMethods.push({ type: '行動支付', name: '西瓜卡' });
+    savePaymentMethods();
+  }
+}
+function savePaymentMethods() { localStorage.setItem(PAYMENT_METHODS_KEY, JSON.stringify(paymentMethods)); }
+
+function loadTotalPeople() {
+  try {
+    const raw = localStorage.getItem(PEOPLE_KEY);
+    totalPeople = raw ? parseInt(raw, 10) : 1;
+    if (isNaN(totalPeople) || totalPeople < 1) totalPeople = 1;
+  } catch { totalPeople = 1; }
+}
+function saveTotalPeople() { localStorage.setItem(PEOPLE_KEY, String(totalPeople)); }
+
+function renderTotalPeople() {
+  $('totalPeople').textContent = totalPeople;
+}
+
+function renderPaymentMethodSelects() {
+  ['input', 'edit'].forEach(prefix => {
+    const sel = document.getElementById(prefix + 'PaymentMethod');
+    const cur = sel.value;
+    const payType = document.getElementById(prefix + 'Payment').value;
+    const methods = paymentMethods.filter(m => m.type === payType);
+    sel.innerHTML = methods.map(m => `<option value="${escHtml(m.name)}">${escHtml(m.name)}</option>`).join('');
+    // Restore selection if still valid
+    if (cur && methods.some(m => m.name === cur)) sel.value = cur;
+    // Show/hide the group
+    const group = sel.closest('.pm-group');
+    if (group) group.style.display = (payType === '信用卡' || payType === '行動支付') ? '' : 'none';
+  });
+}
+
+const CAT_COLORS = {
+  '餐飲': '#f59e0b', '交通': '#3b82f6', '住宿': '#6366f1',
+  '購物': '#ec4899', '娛樂': '#10b981', '網路電信': '#06b6d4', '手續費': '#ef4444', '保險': '#8b5cf6',
+  '其他': '#9ca3af'
+};
+
+// DOM refs
+const $ = id => document.getElementById(id);
+const inputDate = $('inputDate');
+const inputCategory = $('inputCategory');
+const inputDesc = $('inputDesc');
+const inputAmount = $('inputAmount');
+const inputCurrency = $('inputCurrency');
+const inputRate = $('inputRate');
+const inputPayment = $('inputPayment');
+const expenseList = $('expenseList');
+const emptyState = $('emptyState');
+
+// load
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    expenses = raw ? JSON.parse(raw) : [];
+    expenses.forEach(e => {
+      if (typeof e.twd !== 'number') e.twd = e.amount * e.rate;
+      if (!e.payer) e.payer = '我';
+      if (!e.paymentMethod) e.paymentMethod = '';
+    });
+  } catch { expenses = []; }
+}
+
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses));
+}
+
+// helpers
+function todayStr() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function fmt(n) {
+  return Number(n).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function fmt1(n) {
+  return Number(n).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 1 });
+}
+
+function tagClass(cat) {
+  const m = { '餐飲':'tag-food','交通':'tag-transport','住宿':'tag-accommodation','購物':'tag-shopping','娛樂':'tag-entertainment','網路電信':'tag-other','手續費':'tag-other','保險':'tag-other','其他':'tag-other' };
+  return m[cat] || 'tag-other';
+}
+
+// add
+function addExpense() {
+  const date = inputDate.value;
+  const category = inputCategory.value;
+  const desc = inputDesc.value.trim();
+  const amount = parseFloat(inputAmount.value);
+  const currency = inputCurrency.value;
+  const rate = parseFloat(inputRate.value);
+  const payment = inputPayment.value;
+  const payer = document.getElementById('inputPayer').value || '我';
+  const paymentMethod = (payment === '信用卡' || payment === '行動支付') ? document.getElementById('inputPaymentMethod').value : '';
+
+  if (!date) { alert('請選擇日期'); return; }
+  if (!desc) { alert('請填寫項目'); return; }
+  if (isNaN(amount) || amount <= 0) { alert('請填寫有效金額'); return; }
+  if (currency !== 'TWD' && (isNaN(rate) || rate <= 0)) { alert('請填寫匯率'); return; }
+
+  const twd = currency === 'TWD' ? Math.round(amount) : Math.round(amount * rate);
+  expenses.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2,5), date, category, desc, amount, currency, rate, twd, payment, payer, paymentMethod });
+  save();
+  clearForm();
+  render();
+  inputDesc.focus();
+}
+
+function clearForm() {
+  inputDate.value = todayStr();
+  inputCategory.value = '餐飲';
+  inputDesc.value = '';
+  inputAmount.value = '';
+  inputCurrency.value = 'JPY';
+  onCurrencyChange('input');
+  inputRate.value = '';
+  inputPayment.value = '現金';
+  document.getElementById('inputPaymentMethod').value = '';
+  const payerSel = document.getElementById('inputPayer');
+  if (payers.length > 0) payerSel.value = payers[0];
+}
+
+// delete
+function deleteExpense(id) {
+  if (!confirm('確定刪除此筆記錄？')) return;
+  expenses = expenses.filter(e => e.id !== id);
+  save();
+  render();
+}
+
+// edit
+function openEdit(id) {
+  const e = expenses.find(x => x.id === id);
+  if (!e) return;
+  editingId = id;
+  $('editDate').value = e.date;
+  $('editCategory').value = e.category;
+  $('editDesc').value = e.desc;
+  $('editAmount').value = e.amount;
+  $('editCurrency').value = e.currency;
+  $('editRate').value = e.rate;
+  onCurrencyChange('edit');
+  $('editPayment').value = e.payment;
+  $('editPayer').value = e.payer || '我';
+  // Set payment method after rendering the select
+  renderPaymentMethodSelects();
+  $('editPaymentMethod').value = e.paymentMethod || '';
+  $('editModal').classList.add('active');
+  // Auto-fetch rate for this expense's date if not already cached
+  if (cachedRatesDate !== e.date) {
+    fetchLiveRates(e.date);
+  }
+}
+
+$('btnEditCancel').onclick = () => { $('editModal').classList.remove('active'); editingId = null; };
+$('btnEditSave').onclick = () => {
+  const date = $('editDate').value;
+  const category = $('editCategory').value;
+  const desc = $('editDesc').value.trim();
+  const amount = parseFloat($('editAmount').value);
+  const currency = $('editCurrency').value;
+  const rate = parseFloat($('editRate').value);
+  const payment = $('editPayment').value;
+  const payer = $('editPayer').value || '我';
+  const paymentMethod = (payment === '信用卡' || payment === '行動支付') ? $('editPaymentMethod').value : '';
+
+  if (!date || !desc || isNaN(amount) || amount <= 0) { alert('請確認所有欄位皆填寫正確'); return; }
+  if (currency !== 'TWD' && (isNaN(rate) || rate <= 0)) { alert('請填寫匯率'); return; }
+
+  const idx = expenses.findIndex(x => x.id === editingId);
+  if (idx === -1) return;
+  const twd = currency === 'TWD' ? Math.round(amount) : Math.round(amount * rate);
+  expenses[idx] = { ...expenses[idx], date, category, desc, amount, currency, rate, twd, payment, payer, paymentMethod };
+  save();
+  $('editModal').classList.remove('active');
+  editingId = null;
+  render();
+};
+
+// render
+function render() {
+  const search = ($('filterSearch').value || '').toLowerCase();
+  const catFilter = $('filterCategory').value;
+  const curFilter = $('filterCurrency').value;
+  const payFilter = $('filterPayment').value;
+  const payerFilter = $('filterPayer').value;
+  const pmFilter = $('filterPaymentMethod').value;
+
+  let filtered = expenses.filter(e => {
+    if (search && !e.desc.toLowerCase().includes(search) && !e.category.includes(search)) return false;
+    if (catFilter && e.category !== catFilter) return false;
+    if (curFilter && e.currency !== curFilter) return false;
+    if (payFilter && e.payment !== payFilter) return false;
+    if (payerFilter && (e.payer || '我') !== payerFilter) return false;
+    if (pmFilter && (e.paymentMethod || '') !== pmFilter) return false;
+    return true;
+  });
+
+  // sort by date desc then id desc
+  filtered = [...filtered].sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+
+  // summary
+  const totalTWD = filtered.reduce((s, e) => s + e.twd, 0);
+  const totalCount = filtered.length;
+  $('sumTotal').textContent = fmt(totalTWD);
+
+  // foreign summary: group by currency (exclude TWD)
+  const curMap = {};
+  filtered.forEach(e => {
+    if (e.currency === 'TWD') return;
+    if (!curMap[e.currency]) curMap[e.currency] = 0;
+    curMap[e.currency] += e.amount;
+  });
+  const foreignParts = Object.entries(curMap).map(([c, a]) => fmt1(a) + ' ' + c);
+  $('sumForeign').textContent = foreignParts.join(' + ') || '0';
+
+  $('sumCount').textContent = totalCount;
+
+  // daily avg
+  const dates = [...new Set(filtered.map(e => e.date))];
+  const dailyAvg = dates.length > 0 ? Math.round(totalTWD / dates.length) : 0;
+  $('sumDaily').textContent = fmt(dailyAvg);
+
+  // per-person summary
+  renderPayerSummary(filtered);
+
+  // table rows
+  if (filtered.length === 0) {
+    expenseList.innerHTML = '';
+    emptyState.style.display = 'block';
+    $('categoryChartCard').style.display = 'none';
+    $('payerSummaryCard').style.display = 'none';
+    return;
+  }
+  emptyState.style.display = 'none';
+
+  expenseList.innerHTML = filtered.map(e => {
+    const twdFmt = fmt(e.twd);
+    const isTwd = e.currency === 'TWD';
+    const amtFmt = isTwd ? '-' : fmt1(e.amount);
+    return `<tr>
+      <td>${e.date}</td>
+      <td><span class="tag ${tagClass(e.category)}">${e.category}</span></td>
+      <td>${escHtml(e.desc)}</td>
+      <td class="amt">${amtFmt}</td>
+      <td class="cur">${isTwd ? '-' : e.currency}</td>
+      <td class="cur">${isTwd ? '-' : e.rate}</td>
+      <td class="amt">NT$ ${twdFmt}</td>
+      <td class="cur">${e.payment}${e.paymentMethod ? ' · ' + escHtml(e.paymentMethod) : ''}</td>
+      <td class="cur">${escHtml(e.payer || '我')}</td>
+      <td>
+        <button class="del-btn" onclick="openEdit('${e.id}')" title="編輯">✏️</button>
+        <button class="del-btn" onclick="deleteExpense('${e.id}')" title="刪除">✕</button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  // category chart
+  renderCategoryChart(filtered);
+}
+
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function renderCategoryChart(filtered) {
+  const catTotal = {};
+  filtered.forEach(e => {
+    catTotal[e.category] = (catTotal[e.category] || 0) + e.twd;
+  });
+  const total = Object.values(catTotal).reduce((a, b) => a + b, 0);
+  if (total === 0) { $('categoryChartCard').style.display = 'none'; return; }
+
+  const sorted = Object.entries(catTotal).sort((a, b) => b[1] - a[1]);
+  const bar = $('categoryBar');
+  const legend = $('categoryLegend');
+
+  bar.innerHTML = sorted.map(([cat, amt]) => {
+    const pct = (amt / total * 100);
+    return `<div class="category-bar-seg" style="width:${pct}%;background:${CAT_COLORS[cat] || '#999'};" title="${cat}: ${fmt(amt)} (${pct.toFixed(1)}%)">${pct > 8 ? cat : ''}</div>`;
+  }).join('');
+
+  legend.innerHTML = sorted.map(([cat, amt]) => {
+    const pct = (amt / total * 100).toFixed(1);
+    return `<div class="category-legend-item"><span class="category-legend-dot" style="background:${CAT_COLORS[cat] || '#999'}"></span>${cat} ${fmt(amt)} (${pct}%)</div>`;
+  }).join('');
+
+  $('categoryChartCard').style.display = 'block';
+}
+
+function renderPayerSummary(filtered) {
+  const card = $('payerSummaryCard');
+  const content = $('payerSummaryContent');
+  const payerTotals = {};
+  filtered.forEach(e => {
+    const p = e.payer || '我';
+    payerTotals[p] = (payerTotals[p] || 0) + e.twd;
+  });
+  const entries = Object.entries(payerTotals);
+  if (entries.length === 0) { card.style.display = 'none'; return; }
+
+  // Build settlement entries including prepaid (TWD equivalent)
+  const settleEntries = entries.map(([p, paid]) => [p, paid + getPrepaidTwd(p)]);
+
+  const total = filtered.reduce((s, e) => s + e.twd, 0);
+
+  // Group headcount: only count the group LEADER's headcount, not members
+  // If "姐" belongs to "媽", the group "媽" headcount = 媽's headcount
+  const groupHeadcount = {};
+  payers.forEach(p => {
+    const g = payerGroups[p]; // is this payer a member of a group?
+    if (g) {
+      // Member: ensure group leader's headcount exists (only once)
+      if (!groupHeadcount[g]) {
+        const leader = payers.find(x => x === g);
+        groupHeadcount[g] = payerHeads[leader || p] || 1;
+      }
+    } else {
+      // Group leader or independent (only if not already set by a member)
+      if (!groupHeadcount[p]) {
+        groupHeadcount[p] = payerHeads[p] || 1;
+      }
+    }
+  });
+
+  const heads = Object.values(groupHeadcount).reduce((s, v) => s + v, 0);
+  const perHead = heads > 0 ? total / heads : total;
+
+  card.style.display = 'block';
+  content.innerHTML = `
+    <div style="display:flex;flex-wrap:wrap;gap:12px;width:100%;">
+      ${entries.map(([p, amt]) => {
+        const g = payerGroups[p];
+        const label = g ? escHtml(p) + ' (' + escHtml(g) + ')' : escHtml(p);
+        const pp = payerPrepaid[p];
+        const ppAmt = pp ? pp.amount : 0;
+        const ppCur = pp ? pp.currency : '';
+        const ppTwd = getPrepaidTwd(p);
+        return `<div style="background:#f8f9ff;border-radius:8px;padding:8px 14px;text-align:center;min-width:80px;flex:1;">
+          <div style="font-size:0.7rem;color:#666;">${label}</div>
+          <div style="font-weight:700;font-size:1rem;color:#4f46e5;margin-top:2px;">NT$ ${fmt(amt)}</div>
+          ${ppAmt > 0 ? `<div style="font-size:0.65rem;color:#8b5cf6;margin-top:1px;">+ 預付 ${ppCur} ${fmt(ppAmt)} (=NT$ ${fmt(ppTwd)})</div>` : ''}
+        </div>`;
+      }).join('')}
+      <div style="background:#f0fdf4;border-radius:8px;padding:8px 14px;text-align:center;min-width:80px;flex:1;">
+        <div style="font-size:0.7rem;color:#666;">每人平均 (${heads} 人)</div>
+        <div style="font-weight:700;font-size:1rem;color:#059669;margin-top:2px;">NT$ ${fmt(Math.round(perHead))}</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;text-align:center;">
+      <button class="btn btn-sm btn-outline" id="btnSettle" style="font-size:0.85rem;">🧮 結算</button>
+    </div>
+    <div id="settleResult" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid #e5e7eb;"></div>
+  `;
+
+  const settleBtn = document.getElementById('btnSettle');
+  if (settleBtn) {
+    const newBtn = settleBtn.cloneNode(true);
+    settleBtn.parentNode.replaceChild(newBtn, settleBtn);
+    newBtn.onclick = () => renderSettlement(settleEntries, total, perHead, groupHeadcount);
+  }
+}
+
+function renderSettlement(entries, total, perHead, groupHeadcount) {
+  const resultEl = document.getElementById('settleResult');
+  if (!resultEl) return;
+
+  const heads = Object.values(groupHeadcount).reduce((s, v) => s + v, 0);
+  if (heads <= 1) {
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = '<div style="color:#999;text-align:center;padding:8px;">總人數為 1，無需結算</div>';
+    return;
+  }
+
+  // Group payers and their payments by group
+  const grpData = {};
+  for (const [p, paid] of entries) {
+    const g = payerGroups[p];
+    if (g) {
+      if (!grpData[g]) {
+        grpData[g] = { paid: 0, headcount: groupHeadcount[g] || (payerHeads[p] || 1), label: g, members: [] };
+      }
+      grpData[g].paid += paid;
+      grpData[g].members.push(p);
+    } else {
+      if (!grpData[p]) {
+        grpData[p] = { paid: 0, headcount: payerHeads[p] || 1, label: p, members: [p] };
+      }
+      grpData[p].paid += paid;
+    }
+  }
+  // Add groups/payers with headcount but no payments
+  for (const [k, hc] of Object.entries(groupHeadcount)) {
+    if (!grpData[k]) {
+      grpData[k] = { paid: 0, headcount: hc, label: k, members: [k] };
+    }
+  }
+
+  const balance = {};
+  for (const [k, d] of Object.entries(grpData)) {
+    balance[k] = d.paid - perHead * d.headcount;
+  }
+
+  const debtors = Object.entries(balance).filter(([, v]) => v < -1).sort((a, b) => a[1] - b[1]);
+  const creditors = Object.entries(balance).filter(([, v]) => v > 1).sort((a, b) => b[1] - a[1]);
+
+  if (debtors.length === 0 && creditors.length === 0) {
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = '<div style="color:#999;text-align:center;padding:8px;">帳目已平，無需結算</div>';
+    return;
+  }
+
+  function groupLabel(k) {
+    const d = grpData[k];
+    const members = d.members.filter(m => m !== k);
+    const suffix = members.length > 0 ? ' (' + members.map(escHtml).join(', ') + ')' : '';
+    return escHtml(d.label || k) + suffix;
+  }
+
+  let html = '<div style="font-size:0.8rem;font-weight:600;margin-bottom:8px;">💰 結算（每人平均 NT$ ' + fmt(Math.round(perHead)) + '，總人數 ' + heads + '）</div>';
+  for (const [dName, dVal] of debtors) {
+    const need = Math.round(-dVal);
+    html += '<div style="font-size:0.85rem;padding:4px 0;">';
+    html += '<span style="color:#dc2626;font-weight:600;">' + groupLabel(dName) + '</span> 須補 <strong>NT$ ' + fmt(need) + '</strong>';
+    let remaining = need;
+    const payTo = [];
+    for (const [cName, cVal] of creditors) {
+      if (remaining <= 0) break;
+      const receive = Math.round(Math.min(cVal, remaining));
+      if (receive > 0) {
+        payTo.push(groupLabel(cName) + ' NT$ ' + fmt(receive));
+        remaining -= receive;
+      }
+    }
+    if (payTo.length > 0) {
+      html += ' → ' + payTo.join('、');
+    }
+    html += '</div>';
+  }
+
+  resultEl.innerHTML = html;
+  resultEl.style.display = 'block';
+}
+
+// populate currency & payer & payment method filters
+function populateFilters() {
+  const currencies = [...new Set(expenses.map(e => e.currency))].sort();
+  $('filterCurrency').innerHTML = '<option value="">全部</option>' + currencies.map(c => `<option>${c}</option>`).join('');
+
+  const usedPayers = [...new Set(expenses.map(e => e.payer || '我'))].sort();
+  const allPayers = [...new Set([...payers, ...usedPayers])];
+  $('filterPayer').innerHTML = '<option value="">全部</option>' + allPayers.map(p => `<option>${p}</option>`).join('');
+
+  const usedPM = [...new Set(expenses.filter(e => e.paymentMethod).map(e => e.paymentMethod))].sort();
+  const allPM = [...new Set([...paymentMethods.map(m => m.name), ...usedPM])];
+  $('filterPaymentMethod').innerHTML = '<option value="">全部</option>' + allPM.map(p => `<option>${p}</option>`).join('');
+}
+
+// reset filters after adding
+function resetFilters() {
+  $('filterSearch').value = '';
+  $('filterCategory').value = '';
+  $('filterCurrency').value = '';
+  $('filterPayment').value = '';
+  $('filterPaymentMethod').value = '';
+  $('filterPayer').value = '';
+}
+
+// export CSV
+$('btnExportCSV').onclick = () => {
+  if (expenses.length === 0) { alert('沒有資料可匯出'); return; }
+  const header = '日期,分類,項目,外幣金額,幣別,匯率,TWD,支付方式,卡片/支付,付款人';
+  const rows = expenses.map(e => `${e.date},${e.category},"${e.desc}",${e.amount},${e.currency},${e.rate},${e.twd},${e.payment},${e.paymentMethod || ''},${e.payer || '我'}`);
+  const csv = '\uFEFF' + header + '\n' + rows.join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '出國記帳_' + todayStr() + '.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+
+// clear all
+$('btnClearAll').onclick = () => {
+  if (expenses.length === 0) return;
+  if (!confirm('確定要清空所有記錄？此操作無法復原。')) return;
+  expenses = [];
+  save();
+  render();
+  populateFilters();
+};
+
+// event listeners
+$('btnAdd').onclick = addExpense;
+
+// enter key in form
+document.querySelectorAll('#inputDesc, #inputAmount, #inputRate').forEach(el => {
+  el.addEventListener('keydown', e => { if (e.key === 'Enter') addExpense(); });
+});
+
+// filter events
+['filterSearch','filterCategory','filterCurrency','filterPayment','filterPayer','filterPaymentMethod'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', render);
+});
+
+// also render on filter change
+$('filterCategory').onchange = render;
+$('filterCurrency').onchange = render;
+$('filterPayment').onchange = render;
+$('filterPayer').onchange = render;
+$('filterPaymentMethod').onchange = render;
+
+// "Add payer" buttons
+function promptAddPayer(selectId) {
+  const name = prompt('輸入新的付款人名稱：');
+  if (!name || !name.trim()) return;
+  const trimmed = name.trim();
+  if (payers.includes(trimmed)) { alert('此付款人已存在'); return; }
+  payers.push(trimmed);
+  payerHeads[trimmed] = 1;
+  payerPrepaid[trimmed] = { amount: 0, currency: 'TWD', rate: 1 };
+  savePayers();
+  savePayerHeads();
+  savePayerPrepaid();
+  renderPayerSelects();
+  populateFilters();
+  if (selectId) document.getElementById(selectId).value = trimmed;
+}
+$('btnAddPayer').onclick = () => promptAddPayer('inputPayer');
+$('btnEditAddPayer').onclick = () => promptAddPayer('editPayer');
+
+// Payer management modal
+function renderPayerList() {
+  const list = $('payerList');
+  if (payers.length === 0) {
+    list.innerHTML = '<div style="color:#999;text-align:center;padding:16px;">尚無付款人，請新增</div>';
+    return;
+  }
+  // Build group options (all payers except self)
+  const groupOpts = '<option value="">不分群組</option>'
+    + payers.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
+
+  // Compute group headcounts for display: leader's headcount only
+  const groupHeads = {};
+  payers.forEach(p => {
+    const g = payerGroups[p]; // member
+    if (g) {
+      // Member - group leader's headcount is what counts
+      if (!groupHeads[g]) {
+        const leader = payers.find(x => x === g);
+        groupHeads[g] = leader ? (payerHeads[leader] || 1) : (payerHeads[p] || 1);
+      }
+    } else {
+      // Leader or independent
+      groupHeads[p] = (groupHeads[p] || 0) + (payerHeads[p] || 1);
+    }
+  });
+
+  list.innerHTML = payers.map((p, i) => {
+    const groupName = payerGroups[p] || '';
+    const showGroupHead = groupName && groupHeads[groupName] > (payerHeads[p] || 1);
+    return `<div style="padding:8px 4px;border-bottom:1px solid #f0f0f0;">
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <span style="flex:1;min-width:50px;">${escHtml(p)}</span>
+        <label style="font-size:0.7rem;color:#666;white-space:nowrap;">人數</label>
+        <input type="number" min="1" max="99" value="${payerHeads[p] || 1}"
+          onchange="updatePayerHead(${i}, this.value)"
+          style="width:40px;padding:3px 4px;border:1px solid #d9d9d9;border-radius:6px;font-size:0.8rem;text-align:center;">
+        <label style="font-size:0.7rem;color:#666;white-space:nowrap;">群組</label>
+        <select onchange="updatePayerGroup(${i}, this.value)" style="width:65px;padding:3px 4px;border:1px solid #d9d9d9;border-radius:6px;font-size:0.8rem;">
+          ${groupOpts.replace(`value="${escHtml(p)}"`, `value="${escHtml(p)}" disabled`)}
+        </select>
+        <button class="btn btn-sm btn-danger" onclick="deletePayer(${i})" style="padding:2px 6px;">✕</button>
+      </div>
+      ${showGroupHead ? `<div style="font-size:0.7rem;color:#8b5cf6;padding-left:4px;margin-top:2px;">📌 ${escHtml(groupName)} 共 ${groupHeads[groupName]} 人</div>` : ''}
+    </div>`;
+  }).join('');
+
+  // Set current group values after render
+  payers.forEach((p, i) => {
+    const sel = list.querySelectorAll('select')[i];
+    if (sel && payerGroups[p]) sel.value = payerGroups[p];
+  });
+}
+
+function updatePayerGroup(index, group) {
+  const name = payers[index];
+  if (group) payerGroups[name] = group;
+  else delete payerGroups[name];
+  savePayerGroups();
+  render();
+}
+
+function updatePayerHead(index, val) {
+  const name = payers[index];
+  payerHeads[name] = Math.max(1, parseInt(val, 10) || 1);
+  savePayerHeads();
+  render();
+}
+
+function updatePayerPrepaid(index, field, val) {
+  const name = payers[index];
+  if (!payerPrepaid[name] || typeof payerPrepaid[name] === 'number') payerPrepaid[name] = { amount: 0, currency: 'TWD', rate: 1 };
+  if (field === 'amount') payerPrepaid[name].amount = Math.max(0, parseFloat(val) || 0);
+  else if (field === 'currency') payerPrepaid[name].currency = val;
+  else if (field === 'rate') payerPrepaid[name].rate = Math.max(0, parseFloat(val) || 1);
+  savePayerPrepaid();
+  render();
+}
+
+function deletePayer(index) {
+  const name = payers[index];
+  if (!confirm(`確定刪除「${name}」？\n（不影響既有記帳記錄，僅移除付款人名單）`)) return;
+  payers.splice(index, 1);
+  if (payers.length === 0) payers = ['我', '旅伴 A'];
+  delete payerHeads[name];
+  delete payerGroups[name];
+  delete payerPrepaid[name];
+  // Clean up group references pointing to deleted payer
+  for (const [k, v] of Object.entries(payerGroups)) {
+    if (v === name) delete payerGroups[k];
+  }
+  savePayers();
+  savePayerHeads();
+  savePayerGroups();
+  savePayerPrepaid();
+  renderPayerList();
+  renderPayerSelects();
+  populateFilters();
+  render();
+}
+
+function openPayerModal() {
+  renderPayerList();
+  $('payerModal').classList.add('active');
+}
+
+$('btnManagePayers').onclick = openPayerModal;
+$('btnPayerModalClose').onclick = () => $('payerModal').classList.remove('active');
+$('btnPayerModalAdd').onclick = () => {
+  promptAddPayer();
+  renderPayerList();
+};
+$('payerModal').onclick = e => { if (e.target === $('payerModal')) $('payerModal').classList.remove('active'); };
+
+// Prepaid modal
+function renderPrepaidList() {
+  const list = $('prepaidList');
+  if (payers.length === 0) {
+    list.innerHTML = '<div style="color:#999;text-align:center;padding:16px;">尚無付款人</div>';
+    return;
+  }
+  const curLabels = { JPY:'日圓',KRW:'韓元',USD:'美元',EUR:'歐元',GBP:'英鎊',HKD:'港幣',CNY:'人民幣',SGD:'新加坡幣',THB:'泰銖',VND:'越南盾',MYR:'馬來西亞幣',AUD:'澳幣',NZD:'紐西蘭幣',CAD:'加幣',CHF:'瑞士法郎',PHP:'菲律賓披索',IDR:'印尼盾',TWD:'台幣' };
+  const curOpts = Object.entries(curLabels)
+    .map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+  list.innerHTML = payers.map((p, i) => {
+    const pp = payerPrepaid[p] || { amount: 0, currency: 'TWD', rate: 1 };
+    return `<div style="display:flex;align-items:center;gap:6px;padding:8px 4px;border-bottom:1px solid #f0f0f0;">
+      <span style="min-width:60px;">${escHtml(p)}</span>
+      <input type="number" min="0" step="0.01" value="${pp.amount}"
+        onchange="updatePayerPrepaid(${i}, 'amount', this.value)"
+        style="width:60px;padding:3px 4px;border:1px solid #d9d9d9;border-radius:6px;font-size:0.8rem;text-align:center;">
+      <select onchange="updatePayerPrepaid(${i}, 'currency', this.value)"
+        style="width:58px;padding:3px 4px;border:1px solid #d9d9d9;border-radius:6px;font-size:0.8rem;">
+        ${curOpts.replace(`value="${pp.currency}"`, `value="${pp.currency}" selected`)}
+      </select>
+      <span style="font-size:0.7rem;color:#999;">匯率</span>
+      <input type="number" step="0.0001" min="0" value="${pp.rate}"
+        onchange="updatePayerPrepaid(${i}, 'rate', this.value)"
+        style="width:60px;padding:3px 4px;border:1px solid #d9d9d9;border-radius:6px;font-size:0.8rem;text-align:center;">
+    </div>`;
+  }).join('');
+}
+$('btnManagePrepaid').onclick = () => {
+  renderPrepaidList();
+  $('prepaidModal').classList.add('active');
+};
+$('btnPrepaidModalClose').onclick = () => $('prepaidModal').classList.remove('active');
+$('prepaidModal').onclick = e => { if (e.target === $('prepaidModal')) $('prepaidModal').classList.remove('active'); };
+
+// === Currency Events ===
+
+function onCurrencyChange(prefix) {
+  const curEl = document.getElementById(prefix + 'Currency');
+  const amtLabel = document.querySelector(`label[for="${prefix}Amount"]`);
+  const rateInput = document.getElementById(prefix + 'Rate');
+  const rateGroup = rateInput.closest('.form-group');
+  const isTwd = curEl.value === 'TWD';
+  if (amtLabel) amtLabel.textContent = isTwd ? 'TWD 金額' : '金額 (外幣)';
+  if (rateGroup) rateGroup.style.display = isTwd ? 'none' : '';
+  if (isTwd) rateInput.value = '1';
+}
+// (onCurrencyChange is called inside the currency change handlers below)
+
+// === Payment Method Events ===
+
+// Show/hide method select based on payment type
+function onPaymentTypeChange(prefix) {
+  document.getElementById(prefix + 'PaymentMethod').value = '';
+  renderPaymentMethodSelects();
+}
+$('inputPayment').onchange = () => onPaymentTypeChange('input');
+$('editPayment').onchange = () => onPaymentTypeChange('edit');
+
+// Add payment method (form)
+function promptAddPaymentMethod(prefix) {
+  const payType = document.getElementById(prefix + 'Payment').value;
+  if (payType !== '信用卡' && payType !== '行動支付') {
+    alert('請先選擇支付方式為「信用卡」或「行動支付」');
+    return;
+  }
+  const name = prompt(`輸入新的${payType}名稱：`);
+  if (!name || !name.trim()) return;
+  const trimmed = name.trim();
+  if (paymentMethods.some(m => m.type === payType && m.name === trimmed)) {
+    alert('此名稱已存在');
+    return;
+  }
+  paymentMethods.push({ type: payType, name: trimmed });
+  savePaymentMethods();
+  renderPaymentMethodSelects();
+  populateFilters();
+  document.getElementById(prefix + 'PaymentMethod').value = trimmed;
+}
+$('btnAddPaymentMethod').onclick = () => promptAddPaymentMethod('input');
+$('btnEditAddPaymentMethod').onclick = () => promptAddPaymentMethod('edit');
+
+// Payment method management modal
+function renderPmList() {
+  const type = $('pmModalType').value;
+  const list = $('pmList');
+  const filtered = paymentMethods.filter(m => m.type === type);
+  if (filtered.length === 0) {
+    list.innerHTML = '<div style="color:#999;text-align:center;padding:16px;">尚無項目，請新增</div>';
+    return;
+  }
+  list.innerHTML = filtered.map((m, i) => {
+    const realIdx = paymentMethods.findIndex(p => p.type === m.type && p.name === m.name);
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 4px;border-bottom:1px solid #f0f0f0;">
+      <span>${escHtml(m.name)}</span>
+      <button class="btn btn-sm btn-danger" onclick="deletePaymentMethod(${realIdx})" style="padding:2px 8px;">✕ 刪除</button>
+    </div>`;
+  }).join('');
+}
+
+function deletePaymentMethod(index) {
+  const m = paymentMethods[index];
+  if (!confirm(`確定刪除「${m.name}」？\n（不影響既有記帳記錄，僅移除卡片/支付名單）`)) return;
+  paymentMethods.splice(index, 1);
+  if (paymentMethods.length === 0) paymentMethods = DEFAULT_PAYMENT_METHODS.map(x => ({ ...x }));
+  savePaymentMethods();
+  renderPmList();
+  renderPaymentMethodSelects();
+  populateFilters();
+  render();
+}
+
+function openPmModal() {
+  renderPmList();
+  $('pmModal').classList.add('active');
+}
+
+$('btnManagePaymentMethods').onclick = openPmModal;
+$('btnPmModalClose').onclick = () => $('pmModal').classList.remove('active');
+$('pmModalType').onchange = renderPmList;
+$('btnPmModalAdd').onclick = () => {
+  const type = $('pmModalType').value;
+  const name = prompt(`輸入新的${type}名稱：`);
+  if (!name || !name.trim()) return;
+  const trimmed = name.trim();
+  if (paymentMethods.some(m => m.type === type && m.name === trimmed)) { alert('此名稱已存在'); return; }
+  paymentMethods.push({ type, name: trimmed });
+  savePaymentMethods();
+  renderPmList();
+  renderPaymentMethodSelects();
+  populateFilters();
+};
+$('pmModal').onclick = e => { if (e.target === $('pmModal')) $('pmModal').classList.remove('active'); };
+
+// modal close on overlay click
+$('editModal').onclick = e => { if (e.target === $('editModal')) { $('editModal').classList.remove('active'); editingId = null; }};
+
+// === Live Exchange Rate ===
+let cachedRates = null;      // { JPY: 0.22, USD: 32.5, ... }
+let cachedRatesDate = null;  // 'YYYY-MM-DD'
+let lastRateUpdate = null;   // Date object
+let rateFetching = false;
+
+const RATE_API_PRIMARY = 'https://api.exchangerate-api.com/v4/latest/USD';
+const RATE_API_FALLBACK = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.min.json';
+
+// Convert USD-based rates to TWD-based rates
+// API returns: 1 USD = XXX units of each currency
+// So 1 JPY in TWD = rates.TWD / rates.JPY
+function toTwdRates(usdRates) {
+  const twdPerUsd = usdRates.TWD;
+  if (!twdPerUsd) return null;
+  const result = {};
+  for (const [cur, val] of Object.entries(usdRates)) {
+    if (cur === 'TWD') { result.TWD = 1; continue; }
+    result[cur] = twdPerUsd / val;
+  }
+  return result;
+}
+
+function updateRateStatus() {
+  const el = $('rateStatus');
+  const editEl = $('editRateStatus');
+  if (!lastRateUpdate || !cachedRatesDate) {
+    el.textContent = '';
+    if (editEl) editEl.textContent = '';
+    return;
+  }
+  const minutes = Math.floor((Date.now() - lastRateUpdate.getTime()) / 60000);
+  const text = (minutes < 1 ? '剛剛更新' : minutes < 60 ? minutes + ' 分鐘前' : '>1 小時前')
+    + ` · ${cachedRatesDate} 匯率`;
+  el.textContent = text;
+  if (editEl) editEl.textContent = text;
+}
+
+// Normalize currency codes to uppercase (currency-api returns lowercase)
+function upKeys(obj) {
+  const r = {};
+  for (const [k, v] of Object.entries(obj)) r[k.toUpperCase()] = v;
+  return r;
+}
+
+async function fetchLiveRates(dateStr) {
+  if (rateFetching) return;
+  rateFetching = true;
+  $('btnFetchRate').textContent = '⋯ 取得中';
+  $('btnFetchRate').disabled = true;
+
+  let usdRates = null;
+  let fetchedDate = null;
+  const today = todayStr();
+  const targetDate = dateStr || today;
+  const isHistorical = targetDate !== today;
+
+  // Try historical API for non-today dates
+  if (isHistorical) {
+    // Primary: jsDelivr with date-tagged version
+    try {
+      const url = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@${targetDate}/v1/currencies/usd.min.json`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.usd) { usdRates = upKeys(data.usd); fetchedDate = targetDate; }
+      }
+    } catch {}
+    // Fallback: Cloudflare Pages
+    if (!usdRates) {
+      try {
+        const url = `https://${targetDate}.currency-api.pages.dev/v1/currencies/usd.min.json`;
+        const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.usd) { usdRates = upKeys(data.usd); fetchedDate = targetDate; }
+        }
+      } catch {}
+    }
+  }
+
+  // Fall back to latest APIs
+  if (!usdRates) {
+    try {
+      const res = await fetch(RATE_API_PRIMARY, { signal: AbortSignal.timeout(8000) });
+      if (res.ok) {
+        const data = await res.json();
+        usdRates = data.rates;
+        fetchedDate = data.date || today;
+      }
+    } catch {}
+
+    if (!usdRates) {
+      try {
+        const res = await fetch(RATE_API_FALLBACK, { signal: AbortSignal.timeout(8000) });
+        if (res.ok) {
+          const data = await res.json();
+          usdRates = upKeys(data.usd);
+          fetchedDate = data.date || today;
+        }
+      } catch {}
+    }
+  }
+
+  $('btnFetchRate').textContent = '🔄 即時匯率';
+  $('btnFetchRate').disabled = false;
+  rateFetching = false;
+
+  if (!usdRates) {
+    if (isHistorical) {
+      alert(`無法取得 ${targetDate} 的匯率資料，請稍後再試或手動輸入。`);
+    } else {
+      alert('無法取得即時匯率，請稍後再試或手動輸入。');
+    }
+    return;
+  }
+
+  const twdRates = toTwdRates(usdRates);
+  if (!twdRates) {
+    alert('匯率資料格式異常，請手動輸入。');
+    return;
+  }
+
+  cachedRates = twdRates;
+  cachedRatesDate = fetchedDate;
+  lastRateUpdate = new Date();
+  updateRateStatus();
+
+  // Auto-fill current currency
+  const cur = inputCurrency.value;
+  if (cachedRates[cur]) {
+    inputRate.value = cachedRates[cur];
+  }
+
+  render();
+}
+
+function fillRateForCurrency(currency) {
+  if (cachedRates && cachedRates[currency]) {
+    inputRate.value = cachedRates[currency];
+    updateRateStatus();
+    return true;
+  }
+  return false;
+}
+
+function fillEditRateForCurrency(currency) {
+  if (cachedRates && cachedRates[currency]) {
+    $('editRate').value = cachedRates[currency];
+    updateRateStatus();
+    return true;
+  }
+  return false;
+}
+
+// Event: date changes -> fetch rates for that date
+inputDate.onchange = () => {
+  const date = inputDate.value;
+  if (date && cachedRatesDate !== date) {
+    fetchLiveRates(date);
+  }
+};
+
+// Event: currency changes -> update label, show/hide rate, try auto-fill
+inputCurrency.onchange = () => {
+  onCurrencyChange('input');
+  if (inputCurrency.value === 'TWD') return;
+  const cur = inputCurrency.value;
+  if (cachedRates && cachedRates[cur]) {
+    inputRate.value = cachedRates[cur];
+    updateRateStatus();
+  } else {
+    if (!cachedRates) {
+      fetchLiveRates(inputDate.value || todayStr());
+    }
+  }
+};
+
+$('btnFetchRate').onclick = () => fetchLiveRates(inputDate.value || todayStr());
+
+// Edit modal: also support live rate fetch
+const editDateEl = document.getElementById('editDate');
+const editCurrencyEl = document.getElementById('editCurrency');
+
+editDateEl.onchange = () => {
+  const date = editDateEl.value;
+  if (date && cachedRatesDate !== date) {
+    fetchLiveRates(date);
+  }
+};
+
+editCurrencyEl.onchange = () => {
+  onCurrencyChange('edit');
+  if (editCurrencyEl.value === 'TWD') return;
+  const cur = editCurrencyEl.value;
+  if (cachedRates && cachedRates[cur]) {
+    $('editRate').value = cachedRates[cur];
+    updateRateStatus();
+  }
+};
+
+$('btnEditFetchRate').onclick = () => {
+  const date = editDateEl.value || todayStr();
+  fetchLiveRates(date).then(() => fillEditRateForCurrency(editCurrencyEl.value));
+};
+
+// Total people buttons
+$('btnPeopleInc').onclick = () => {
+  totalPeople++;
+  saveTotalPeople();
+  renderTotalPeople();
+};
+$('btnPeopleDec').onclick = () => {
+  if (totalPeople <= 1) return;
+  totalPeople--;
+  saveTotalPeople();
+  renderTotalPeople();
+};
+
+// init
+load();
+loadPayers();
+loadPayerHeads();
+loadPayerGroups();
+loadPayerPrepaid();
+loadPaymentMethods();
+loadTotalPeople();
+renderTotalPeople();
+renderPayerSelects();
+renderPaymentMethodSelects();
+clearForm();
+populateFilters();
+render();
+
+// Auto-fetch live rates on startup (silent, no alert on failure)
+fetchLiveRates().catch(() => {});
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Local IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
