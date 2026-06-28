@@ -331,6 +331,19 @@ td .del-btn:hover { opacity: 1; color: #dc2626; }
   </div>
 </div>
 
+<!-- CSV export modal -->
+<div class="modal-overlay" id="exportModal">
+  <div class="modal" style="max-width:500px;">
+    <h2>匯出 CSV</h2>
+    <p style="font-size:0.8rem;color:#666;margin-bottom:8px;">已下載檔案，也可直接複製下方內容傳送</p>
+    <textarea id="exportCsvArea" style="width:100%;height:200px;padding:8px;border:1px solid #d9d9d9;border-radius:8px;font-size:0.8rem;resize:vertical;" readonly></textarea>
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <button class="btn btn-primary" id="btnExportCopy" style="flex:1;">📋 複製</button>
+      <button class="btn btn-outline" id="btnExportClose" style="flex:1;">關閉</button>
+    </div>
+  </div>
+</div>
+
 <!-- payment method management modal -->
 <div class="modal-overlay" id="pmModal">
   <div class="modal" style="max-width:400px;">
@@ -941,12 +954,16 @@ $('btnExportCSV').onclick = () => {
   const header = ['id','日期','分類','項目','外幣金額','幣別','匯率','TWD','支付方式','卡片/支付','付款人'];
   const rows = expenses.map(e => [e.id, e.date, e.category, e.desc, e.amount, e.currency, e.rate, e.twd, e.payment, e.paymentMethod || '', e.payer || '我'].map(csvCell));
   const csv = '\uFEFF' + header.join(',') + '\n' + rows.map(r => r.join(',')).join('\n');
+  // Download file
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = '出國記帳_' + todayStr() + '.csv';
   a.click();
   URL.revokeObjectURL(a.href);
+  // Also show in modal for copying (mobile-friendly)
+  $('exportCsvArea').value = csv;
+  $('exportModal').classList.add('active');
 };
 
 // CSV import logic (shared between file upload and paste)
@@ -1002,6 +1019,13 @@ $('btnImportCSV').onclick = () => {
 };
 $('btnCsvImportCancel').onclick = () => $('csvImportModal').classList.remove('active');
 $('csvImportModal').onclick = e => { if (e.target === $('csvImportModal')) $('csvImportModal').classList.remove('active'); };
+$('btnExportCopy').onclick = () => {
+  $('exportCsvArea').select();
+  document.execCommand('copy');
+  alert('已複製');
+};
+$('btnExportClose').onclick = () => $('exportModal').classList.remove('active');
+$('exportModal').onclick = e => { if (e.target === $('exportModal')) $('exportModal').classList.remove('active'); };
 $('btnCsvPasteImport').onclick = () => {
   const text = $('csvPasteArea').value;
   if (!text.trim()) { alert('請先貼上 CSV 內容或選擇檔案'); return; }
