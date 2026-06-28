@@ -315,6 +315,22 @@ td .del-btn:hover { opacity: 1; color: #dc2626; }
   </div>
 </div>
 
+<!-- CSV import modal -->
+<div class="modal-overlay" id="csvImportModal">
+  <div class="modal" style="max-width:480px;">
+    <h2>匯入 CSV</h2>
+    <p style="font-size:0.8rem;color:#666;margin-bottom:8px;">將 CSV 內容貼上到下方，或直接選擇檔案</p>
+    <textarea id="csvPasteArea" style="width:100%;height:200px;padding:8px;border:1px solid #d9d9d9;border-radius:8px;font-size:0.8rem;resize:vertical;"></textarea>
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <button class="btn btn-outline" id="btnCsvFilePick" style="flex:1;">📁 選擇檔案</button>
+      <button class="btn btn-primary" id="btnCsvPasteImport" style="flex:1;">📤 匯入</button>
+    </div>
+    <div style="margin-top:8px;">
+      <button class="btn btn-outline" id="btnCsvImportCancel" style="width:100%;">取消</button>
+    </div>
+  </div>
+</div>
+
 <!-- payment method management modal -->
 <div class="modal-overlay" id="pmModal">
   <div class="modal" style="max-width:400px;">
@@ -933,59 +949,74 @@ $('btnExportCSV').onclick = () => {
   URL.revokeObjectURL(a.href);
 };
 
-// import CSV
-$('btnImportCSV').onclick = () => $('csvFileInput').click();
+// CSV import logic (shared between file upload and paste)
+function importCsvText(text) {
+  const lines = text.replace(/\r\n?/g, '\n').split('\n').filter(l => l.trim());
+  if (lines.length < 2) { alert('CSV 格式錯誤或無資料'); return; }
+  const header = csvParseRow(lines[0]);
+  const idIdx = header.indexOf('id');
+  let added = 0, skipped = 0;
+  for (let i = 1; i < lines.length; i++) {
+    const row = csvParseRow(lines[i]);
+    if (row.length < 5) continue;
+    const id = idIdx >= 0 && row[idIdx] ? row[idIdx] : null;
+    if (id && expenses.some(e => e.id === id)) { skipped++; continue; }
+    const date = row[idIdx >= 0 ? 1 : 0];
+    const cat = row[idIdx >= 0 ? 2 : 1];
+    const desc = row[idIdx >= 0 ? 3 : 2];
+    const amount = parseFloat(row[idIdx >= 0 ? 4 : 3]) || 0;
+    const currency = row[idIdx >= 0 ? 5 : 4] || 'JPY';
+    const rate = parseFloat(row[idIdx >= 0 ? 6 : 5]) || 1;
+    const payment = row[idIdx >= 0 ? 8 : 7] || '現金';
+    const paymentMethod = row[idIdx >= 0 ? 9 : 8] || '';
+    const payer = row[idIdx >= 0 ? 10 : 9] || '我';
+    const newId = id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 5));
+    const twd = currency === 'TWD' ? Math.round(amount) : Math.round(amount * rate);
+    expenses.push({ id: newId, date, category: cat, desc, amount, currency, rate, twd, payment, payer, paymentMethod });
+    if (payer && !payers.includes(payer)) {
+      payers.push(payer);
+      payerHeads[payer] = 1;
+      payerPrepaid[payer] = { amount: 0, currency: 'TWD', rate: 1 };
+    }
+    if (paymentMethod && (payment === '信用卡' || payment === '行動支付') && !paymentMethods.some(m => m.type === payment && m.name === paymentMethod)) {
+      paymentMethods.push({ type: payment, name: paymentMethod });
+    }
+    added++;
+  }
+  save();
+  savePayers();
+  savePayerHeads();
+  savePayerPrepaid();
+  savePaymentMethods();
+  renderPayerSelects();
+  renderPaymentMethodSelects();
+  populateFilters();
+  render();
+  alert(`匯入完成：新增 ${added} 筆${skipped > 0 ? `，略過 ${skipped} 筆（已存在）` : ''}`);
+}
+
+// import CSV — open modal with paste + file options
+$('btnImportCSV').onclick = () => {
+  $('csvPasteArea').value = '';
+  $('csvImportModal').classList.add('active');
+};
+$('btnCsvImportCancel').onclick = () => $('csvImportModal').classList.remove('active');
+$('csvImportModal').onclick = e => { if (e.target === $('csvImportModal')) $('csvImportModal').classList.remove('active'); };
+$('btnCsvPasteImport').onclick = () => {
+  const text = $('csvPasteArea').value;
+  if (!text.trim()) { alert('請先貼上 CSV 內容或選擇檔案'); return; }
+  importCsvText(text);
+  $('csvImportModal').classList.remove('active');
+};
+$('btnCsvFilePick').onclick = () => $('csvFileInput').click();
 $('csvFileInput').onchange = () => {
   const file = $('csvFileInput').files[0];
   if (!file) return;
   const reader = new FileReader();
   reader.onload = () => {
-    const text = reader.result;
-    const lines = text.replace(/\r\n?/g, '\n').split('\n').filter(l => l.trim());
-    if (lines.length < 2) { alert('CSV 格式錯誤或無資料'); $('csvFileInput').value = ''; return; }
-    const header = csvParseRow(lines[0]);
-    const idIdx = header.indexOf('id');
-    let added = 0, skipped = 0;
-    for (let i = 1; i < lines.length; i++) {
-      const row = csvParseRow(lines[i]);
-      if (row.length < 5) continue;
-      const id = idIdx >= 0 && row[idIdx] ? row[idIdx] : null;
-      if (id && expenses.some(e => e.id === id)) { skipped++; continue; }
-      const date = row[idIdx >= 0 ? 1 : 0];
-      const cat = row[idIdx >= 0 ? 2 : 1];
-      const desc = row[idIdx >= 0 ? 3 : 2];
-      const amount = parseFloat(row[idIdx >= 0 ? 4 : 3]) || 0;
-      const currency = row[idIdx >= 0 ? 5 : 4] || 'JPY';
-      const rate = parseFloat(row[idIdx >= 0 ? 6 : 5]) || 1;
-      const payment = row[idIdx >= 0 ? 8 : 7] || '現金';
-      const paymentMethod = row[idIdx >= 0 ? 9 : 8] || '';
-      const payer = row[idIdx >= 0 ? 10 : 9] || '我';
-      const newId = id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 5));
-      const twd = currency === 'TWD' ? Math.round(amount) : Math.round(amount * rate);
-      expenses.push({ id: newId, date, category: cat, desc, amount, currency, rate, twd, payment, payer, paymentMethod });
-      // Auto-add unknown payer
-      if (payer && !payers.includes(payer)) {
-        payers.push(payer);
-        payerHeads[payer] = 1;
-        payerPrepaid[payer] = { amount: 0, currency: 'TWD', rate: 1 };
-      }
-      // Auto-add unknown payment method
-      if (paymentMethod && (payment === '信用卡' || payment === '行動支付') && !paymentMethods.some(m => m.type === payment && m.name === paymentMethod)) {
-        paymentMethods.push({ type: payment, name: paymentMethod });
-      }
-      added++;
-    }
-    save();
-    savePayers();
-    savePayerHeads();
-    savePayerPrepaid();
-    savePaymentMethods();
-    renderPayerSelects();
-    renderPaymentMethodSelects();
-    populateFilters();
-    render();
+    importCsvText(reader.result);
     $('csvFileInput').value = '';
-    alert(`匯入完成：新增 ${added} 筆${skipped > 0 ? `，略過 ${skipped} 筆（已存在）` : ''}`);
+    $('csvImportModal').classList.remove('active');
   };
   reader.readAsText(file);
 };
