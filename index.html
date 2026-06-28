@@ -89,17 +89,21 @@ td .del-btn:hover { opacity: 1; color: #dc2626; }
 /* responsive */
 @media (max-width: 600px) {
   body { padding: 8px; }
-  .card { padding: 12px; }
+  .card { padding: 10px; }
   .form-group { min-width: 100%; }
-  .form-row { flex-wrap: wrap; }
+  .form-row { flex-wrap: wrap; gap: 6px; }
   .form-row .form-group { flex: 1 1 100% !important; }
-  .summary-grid { grid-template-columns: repeat(2, 1fr); }
-  .filter-bar .form-group { min-width: calc(50% - 8px); flex: 1 1 auto; }
+  .summary-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .summary-item { padding: 8px 4px; }
+  .summary-item .value { font-size: 1rem; overflow: hidden; text-overflow: ellipsis; }
+  .filter-bar { gap: 4px; }
+  .filter-bar .form-group { min-width: calc(50% - 4px); flex: 1 1 auto; }
   .btn-group { width: 100%; }
   .btn-group .btn { flex: 1; }
-  th, td { padding: 6px 4px; font-size: 0.75rem; }
-  .modal { width: 95%; padding: 16px; }
+  th, td { padding: 5px 3px; font-size: 0.7rem; }
+  .modal { width: 95%; padding: 14px; }
   .container { margin: 0; }
+  h1 { font-size: 1.2rem; }
 }
 </style>
 </head>
@@ -694,13 +698,14 @@ function render() {
     const twdFmt = fmt(e.twd);
     const isTwd = e.currency === 'TWD';
     const amtFmt = isTwd ? '-' : fmt1(e.amount);
+    const rateFmt = isTwd ? '-' : parseFloat(e.rate).toFixed(5).replace(/\.?0+$/, '');
     return `<tr>
       <td>${e.date}</td>
       <td><span class="tag ${tagClass(e.category)}">${e.category}</span></td>
       <td>${escHtml(e.desc)}</td>
       <td class="amt">${amtFmt}</td>
       <td class="cur">${isTwd ? '-' : e.currency}</td>
-      <td class="cur">${isTwd ? '-' : e.rate}</td>
+      <td class="cur">${rateFmt}</td>
       <td class="amt">NT$ ${twdFmt}</td>
       <td class="cur">${e.payment}${e.paymentMethod ? ' · ' + escHtml(e.paymentMethod) : ''}</td>
       <td class="cur">${escHtml(e.payer || '我')}</td>
