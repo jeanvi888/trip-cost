@@ -598,7 +598,7 @@ function openEdit(id) {
   $('editDesc').value = e.desc;
   $('editAmount').value = e.amount;
   $('editCurrency').value = e.currency;
-  $('editRate').value = e.rate;
+  $('editRate').value = parseFloat(e.rate).toFixed(5).replace(/\.?0+$/, '');
   onCurrencyChange('edit');
   $('editPayment').value = e.payment;
   $('editPayer').value = e.payer || '我';
@@ -1519,7 +1519,7 @@ async function fetchLiveRates(dateStr) {
   // Auto-fill current currency
   const cur = inputCurrency.value;
   if (cachedRates[cur]) {
-    inputRate.value = cachedRates[cur];
+    inputRate.value = parseFloat(cachedRates[cur]).toFixed(5).replace(/\.?0+$/, '');
   }
 
   render();
@@ -1527,7 +1527,7 @@ async function fetchLiveRates(dateStr) {
 
 function fillRateForCurrency(currency) {
   if (cachedRates && cachedRates[currency]) {
-    inputRate.value = cachedRates[currency];
+    inputRate.value = parseFloat(cachedRates[currency]).toFixed(5).replace(/\.?0+$/, '');
     updateRateStatus();
     return true;
   }
@@ -1536,7 +1536,7 @@ function fillRateForCurrency(currency) {
 
 function fillEditRateForCurrency(currency) {
   if (cachedRates && cachedRates[currency]) {
-    $('editRate').value = cachedRates[currency];
+    $('editRate').value = parseFloat(cachedRates[currency]).toFixed(5).replace(/\.?0+$/, '');
     updateRateStatus();
     return true;
   }
@@ -1557,7 +1557,7 @@ inputCurrency.onchange = () => {
   if (inputCurrency.value === 'TWD') return;
   const cur = inputCurrency.value;
   if (cachedRates && cachedRates[cur]) {
-    inputRate.value = cachedRates[cur];
+    inputRate.value = parseFloat(cachedRates[cur]).toFixed(5).replace(/\.?0+$/, '');
     updateRateStatus();
   } else {
     if (!cachedRates) {
@@ -1584,7 +1584,7 @@ editCurrencyEl.onchange = () => {
   if (editCurrencyEl.value === 'TWD') return;
   const cur = editCurrencyEl.value;
   if (cachedRates && cachedRates[cur]) {
-    $('editRate').value = cachedRates[cur];
+    $('editRate').value = parseFloat(cachedRates[cur]).toFixed(5).replace(/\.?0+$/, '');
     updateRateStatus();
   }
 };
