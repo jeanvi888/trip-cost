@@ -233,7 +233,9 @@ td .del-btn:hover { opacity: 1; color: #dc2626; }
       <button class="btn btn-outline btn-sm" id="btnManagePayers" style="margin-top:auto;">👥 付款人</button>
       <button class="btn btn-outline btn-sm" id="btnManagePrepaid" style="margin-top:auto;">💰 預付</button>
       <button class="btn btn-outline btn-sm" id="btnManagePaymentMethods" style="margin-top:auto;">💳 卡片/支付</button>
-      <button class="btn btn-outline btn-sm" id="btnExportCSV">📥 匯出 CSV</button>
+      <button class="btn btn-outline btn-sm" id="btnExportCSV">📥 匯出</button>
+      <button class="btn btn-outline btn-sm" id="btnImportCSV">📤 匯入</button>
+      <input type="file" id="csvFileInput" accept=".csv" style="display:none">
       <button class="btn btn-outline btn-sm" id="btnClearAll">🗑️ 清空</button>
     </div>
   </div>
@@ -893,18 +895,99 @@ function resetFilters() {
   $('filterPayer').value = '';
 }
 
+// CSV helpers
+function csvCell(s) {
+  const str = String(s ?? '');
+  return /[",\n]/.test(str) ? '"' + str.replace(/"/g, '""') + '"' : str;
+}
+function csvParseRow(line) {
+  const row = [];
+  let cur = '', inq = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (inq) {
+      if (c === '"' && line[i + 1] === '"') { cur += '"'; i++; }
+      else if (c === '"') { inq = false; }
+      else { cur += c; }
+    } else {
+      if (c === '"') { inq = true; }
+      else if (c === ',') { row.push(cur); cur = ''; }
+      else { cur += c; }
+    }
+  }
+  row.push(cur);
+  return row;
+}
+
 // export CSV
 $('btnExportCSV').onclick = () => {
   if (expenses.length === 0) { alert('沒有資料可匯出'); return; }
-  const header = '日期,分類,項目,外幣金額,幣別,匯率,TWD,支付方式,卡片/支付,付款人';
-  const rows = expenses.map(e => `${e.date},${e.category},"${e.desc}",${e.amount},${e.currency},${e.rate},${e.twd},${e.payment},${e.paymentMethod || ''},${e.payer || '我'}`);
-  const csv = '\uFEFF' + header + '\n' + rows.join('\n');
+  const header = ['id','日期','分類','項目','外幣金額','幣別','匯率','TWD','支付方式','卡片/支付','付款人'];
+  const rows = expenses.map(e => [e.id, e.date, e.category, e.desc, e.amount, e.currency, e.rate, e.twd, e.payment, e.paymentMethod || '', e.payer || '我'].map(csvCell));
+  const csv = '\uFEFF' + header.join(',') + '\n' + rows.map(r => r.join(',')).join('\n');
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = '出國記帳_' + todayStr() + '.csv';
   a.click();
   URL.revokeObjectURL(a.href);
+};
+
+// import CSV
+$('btnImportCSV').onclick = () => $('csvFileInput').click();
+$('csvFileInput').onchange = () => {
+  const file = $('csvFileInput').files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const text = reader.result;
+    const lines = text.replace(/\r\n?/g, '\n').split('\n').filter(l => l.trim());
+    if (lines.length < 2) { alert('CSV 格式錯誤或無資料'); $('csvFileInput').value = ''; return; }
+    const header = csvParseRow(lines[0]);
+    const idIdx = header.indexOf('id');
+    let added = 0, skipped = 0;
+    for (let i = 1; i < lines.length; i++) {
+      const row = csvParseRow(lines[i]);
+      if (row.length < 5) continue;
+      const id = idIdx >= 0 && row[idIdx] ? row[idIdx] : null;
+      if (id && expenses.some(e => e.id === id)) { skipped++; continue; }
+      const date = row[idIdx >= 0 ? 1 : 0];
+      const cat = row[idIdx >= 0 ? 2 : 1];
+      const desc = row[idIdx >= 0 ? 3 : 2];
+      const amount = parseFloat(row[idIdx >= 0 ? 4 : 3]) || 0;
+      const currency = row[idIdx >= 0 ? 5 : 4] || 'JPY';
+      const rate = parseFloat(row[idIdx >= 0 ? 6 : 5]) || 1;
+      const payment = row[idIdx >= 0 ? 8 : 7] || '現金';
+      const paymentMethod = row[idIdx >= 0 ? 9 : 8] || '';
+      const payer = row[idIdx >= 0 ? 10 : 9] || '我';
+      const newId = id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 5));
+      const twd = currency === 'TWD' ? Math.round(amount) : Math.round(amount * rate);
+      expenses.push({ id: newId, date, category: cat, desc, amount, currency, rate, twd, payment, payer, paymentMethod });
+      // Auto-add unknown payer
+      if (payer && !payers.includes(payer)) {
+        payers.push(payer);
+        payerHeads[payer] = 1;
+        payerPrepaid[payer] = { amount: 0, currency: 'TWD', rate: 1 };
+      }
+      // Auto-add unknown payment method
+      if (paymentMethod && (payment === '信用卡' || payment === '行動支付') && !paymentMethods.some(m => m.type === payment && m.name === paymentMethod)) {
+        paymentMethods.push({ type: payment, name: paymentMethod });
+      }
+      added++;
+    }
+    save();
+    savePayers();
+    savePayerHeads();
+    savePayerPrepaid();
+    savePaymentMethods();
+    renderPayerSelects();
+    renderPaymentMethodSelects();
+    populateFilters();
+    render();
+    $('csvFileInput').value = '';
+    alert(`匯入完成：新增 ${added} 筆${skipped > 0 ? `，略過 ${skipped} 筆（已存在）` : ''}`);
+  };
+  reader.readAsText(file);
 };
 
 // clear all
