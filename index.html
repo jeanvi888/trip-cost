@@ -219,6 +219,17 @@ td .del-btn:hover { opacity: 1; color: #dc2626; }
           <button class="btn btn-sm btn-outline" id="btnAddPayer" title="新增付款人" style="padding:4px 8px;white-space:nowrap;">＋</button>
         </div>
       </div>
+      <div class="form-group" style="min-width:80px;">
+        <label>分攤</label>
+        <select id="inputSplitType" onchange="onSplitTypeChange('input')" style="width:100%;padding:8px 10px;border:1px solid #d9d9d9;border-radius:8px;font-size:0.875rem;outline:none;">
+          <option value="even">平均</option>
+          <option value="personal">指定負擔</option>
+        </select>
+      </div>
+      <div class="form-group" id="inputPersonalPayerGroup" style="min-width:80px;display:none;">
+        <label>負擔人</label>
+        <select id="inputPersonalPayer" class="payer-select" style="width:100%;padding:8px 10px;border:1px solid #d9d9d9;border-radius:8px;font-size:0.875rem;outline:none;"></select>
+      </div>
       <div class="btn-group">
         <button class="btn btn-primary" id="btnAdd">＋ 新增</button>
       </div>
@@ -259,7 +270,7 @@ td .del-btn:hover { opacity: 1; color: #dc2626; }
       <table>
         <thead>
           <tr>
-            <th>日期</th><th>分類</th><th>項目</th><th style="text-align:right;">外幣金額</th><th>幣別</th><th>匯率</th><th style="text-align:right;">TWD</th><th>支付</th><th>付款人</th><th style="width:40px;"></th>
+            <th>日期</th><th>分類</th><th>項目</th><th style="text-align:right;">外幣金額</th><th>幣別</th><th>匯率</th><th style="text-align:right;">TWD</th><th>支付</th><th>付款人</th><th>分攤</th><th style="width:40px;"></th>
           </tr>
         </thead>
         <tbody id="expenseList"></tbody>
@@ -288,6 +299,8 @@ td .del-btn:hover { opacity: 1; color: #dc2626; }
       <div class="form-group"><label>支付</label><select id="editPayment"><option>現金</option><option>信用卡</option><option>行動支付</option><option>其他</option></select></div>
       <div class="form-group pm-group" style="min-width:110px;"><label>卡片／支付</label><div style="display:flex;gap:4px;"><select id="editPaymentMethod" class="pm-select" style="flex:1;"></select><button class="btn btn-sm btn-outline" id="btnEditAddPaymentMethod" style="padding:4px 8px;">＋</button></div></div>
       <div class="form-group" style="min-width:90px;"><label>付款人</label><div style="display:flex;gap:4px;"><select id="editPayer" class="payer-select" style="flex:1;"></select><button class="btn btn-sm btn-outline" id="btnEditAddPayer" style="padding:4px 8px;">＋</button></div></div>
+      <div class="form-group" style="min-width:70px;"><label>分攤</label><select id="editSplitType" onchange="onSplitTypeChange('edit')" style="width:100%;padding:8px 10px;border:1px solid #d9d9d9;border-radius:8px;font-size:0.875rem;outline:none;"><option value="even">平均</option><option value="personal">指定負擔</option></select></div>
+      <div class="form-group" id="editPersonalPayerGroup" style="min-width:80px;display:none;"><label>負擔人</label><select id="editPersonalPayer" class="payer-select" style="width:100%;padding:8px 10px;border:1px solid #d9d9d9;border-radius:8px;font-size:0.875rem;outline:none;"></select></div>
     </div>
     <div class="form-row" style="justify-content:flex-end;">
       <button class="btn btn-outline" id="btnEditCancel">取消</button>
@@ -514,6 +527,8 @@ function load() {
       if (typeof e.twd !== 'number') e.twd = e.amount * e.rate;
       if (!e.payer) e.payer = '我';
       if (!e.paymentMethod) e.paymentMethod = '';
+      if (!e.splitType) e.splitType = 'even';
+      if (!e.personalPayer) e.personalPayer = '';
     });
   } catch { expenses = []; }
 }
@@ -552,14 +567,17 @@ function addExpense() {
   const payment = inputPayment.value;
   const payer = document.getElementById('inputPayer').value || '我';
   const paymentMethod = (payment === '信用卡' || payment === '行動支付') ? document.getElementById('inputPaymentMethod').value : '';
+  const splitType = document.getElementById('inputSplitType').value;
+  const personalPayer = splitType === 'personal' ? document.getElementById('inputPersonalPayer').value : '';
 
   if (!date) { alert('請選擇日期'); return; }
   if (!desc) { alert('請填寫項目'); return; }
   if (isNaN(amount) || amount <= 0) { alert('請填寫有效金額'); return; }
   if (currency !== 'TWD' && (isNaN(rate) || rate <= 0)) { alert('請填寫匯率'); return; }
+  if (splitType === 'personal' && !personalPayer) { alert('請選擇指定負擔人'); return; }
 
   const twd = currency === 'TWD' ? Math.round(amount) : Math.round(amount * rate);
-  expenses.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2,5), date, category, desc, amount, currency, rate, twd, payment, payer, paymentMethod });
+  expenses.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2,5), date, category, desc, amount, currency, rate, twd, payment, payer, paymentMethod, splitType, personalPayer });
   save();
   clearForm();
   render();
@@ -578,6 +596,8 @@ function clearForm() {
   document.getElementById('inputPaymentMethod').value = '';
   const payerSel = document.getElementById('inputPayer');
   if (payers.length > 0) payerSel.value = payers[0];
+  document.getElementById('inputSplitType').value = 'even';
+  document.getElementById('inputPersonalPayerGroup').style.display = 'none';
 }
 
 // delete
@@ -602,6 +622,9 @@ function openEdit(id) {
   onCurrencyChange('edit');
   $('editPayment').value = e.payment;
   $('editPayer').value = e.payer || '我';
+  $('editSplitType').value = e.splitType || 'even';
+  $('editPersonalPayer').value = e.personalPayer || '';
+  $('editPersonalPayerGroup').style.display = (e.splitType === 'personal') ? '' : 'none';
   // Set payment method after rendering the select
   renderPaymentMethodSelects();
   $('editPaymentMethod').value = e.paymentMethod || '';
@@ -623,14 +646,17 @@ $('btnEditSave').onclick = () => {
   const payment = $('editPayment').value;
   const payer = $('editPayer').value || '我';
   const paymentMethod = (payment === '信用卡' || payment === '行動支付') ? $('editPaymentMethod').value : '';
+  const splitType = $('editSplitType').value;
+  const personalPayer = splitType === 'personal' ? $('editPersonalPayer').value : '';
 
   if (!date || !desc || isNaN(amount) || amount <= 0) { alert('請確認所有欄位皆填寫正確'); return; }
   if (currency !== 'TWD' && (isNaN(rate) || rate <= 0)) { alert('請填寫匯率'); return; }
+  if (splitType === 'personal' && !personalPayer) { alert('請選擇指定負擔人'); return; }
 
   const idx = expenses.findIndex(x => x.id === editingId);
   if (idx === -1) return;
   const twd = currency === 'TWD' ? Math.round(amount) : Math.round(amount * rate);
-  expenses[idx] = { ...expenses[idx], date, category, desc, amount, currency, rate, twd, payment, payer, paymentMethod };
+  expenses[idx] = { ...expenses[idx], date, category, desc, amount, currency, rate, twd, payment, payer, paymentMethod, splitType, personalPayer };
   save();
   $('editModal').classList.remove('active');
   editingId = null;
@@ -699,6 +725,9 @@ function render() {
     const isTwd = e.currency === 'TWD';
     const amtFmt = isTwd ? '-' : fmt1(e.amount);
     const rateFmt = isTwd ? '-' : parseFloat(e.rate).toFixed(5).replace(/\.?0+$/, '');
+    const splitLabel = e.splitType === 'personal' && e.personalPayer
+      ? '<span style="color:#d97706;font-size:0.7rem;">指定<br>' + escHtml(e.personalPayer) + '</span>'
+      : '<span style="color:#059669;font-size:0.7rem;">平均</span>';
     return `<tr>
       <td>${e.date}</td>
       <td><span class="tag ${tagClass(e.category)}">${e.category}</span></td>
@@ -709,6 +738,7 @@ function render() {
       <td class="amt">NT$ ${twdFmt}</td>
       <td class="cur">${e.payment}${e.paymentMethod ? ' · ' + escHtml(e.paymentMethod) : ''}</td>
       <td class="cur">${escHtml(e.payer || '我')}</td>
+      <td style="font-size:0.7rem;text-align:center;">${splitLabel}</td>
       <td>
         <button class="del-btn" onclick="openEdit('${e.id}')" title="編輯">✏️</button>
         <button class="del-btn" onclick="deleteExpense('${e.id}')" title="刪除">✕</button>
@@ -820,11 +850,11 @@ function renderPayerSummary(filtered) {
   if (settleBtn) {
     const newBtn = settleBtn.cloneNode(true);
     settleBtn.parentNode.replaceChild(newBtn, settleBtn);
-    newBtn.onclick = () => renderSettlement(settleEntries, total, perHead, groupHeadcount);
+    newBtn.onclick = () => renderSettlement(total, perHead, groupHeadcount, filtered);
   }
 }
 
-function renderSettlement(entries, total, perHead, groupHeadcount) {
+function renderSettlement(total, perHead, groupHeadcount, filtered) {
   const resultEl = document.getElementById('settleResult');
   if (!resultEl) return;
 
@@ -835,70 +865,122 @@ function renderSettlement(entries, total, perHead, groupHeadcount) {
     return;
   }
 
-  // Group payers and their payments by group
+  // Separate even-split vs personal expenses
+  const evenExpenses = filtered.filter(e => e.splitType !== 'personal');
+  const personalExpenses = filtered.filter(e => e.splitType === 'personal' && e.personalPayer);
+  const evenTotal = evenExpenses.reduce((s, e) => s + e.twd, 0);
+  const evenPerHead = heads > 0 ? evenTotal / heads : 0;
+
+  // Build per-group data from even-split expenses
   const grpData = {};
-  for (const [p, paid] of entries) {
-    const g = payerGroups[p];
-    if (g) {
-      if (!grpData[g]) {
-        grpData[g] = { paid: 0, headcount: groupHeadcount[g] || (payerHeads[p] || 1), label: g, members: [] };
-      }
-      grpData[g].paid += paid;
-      grpData[g].members.push(p);
-    } else {
-      if (!grpData[p]) {
-        grpData[p] = { paid: 0, headcount: payerHeads[p] || 1, label: p, members: [p] };
-      }
-      grpData[p].paid += paid;
+  function ensureGroup(g) {
+    if (!grpData[g]) {
+      grpData[g] = { paid: 0, headcount: groupHeadcount[g] || 1, label: g, members: [g] };
     }
+    return grpData[g];
   }
-  // Add groups/payers with headcount but no payments
-  for (const [k, hc] of Object.entries(groupHeadcount)) {
-    if (!grpData[k]) {
-      grpData[k] = { paid: 0, headcount: hc, label: k, members: [k] };
+  // Collect even-split paid amounts per group
+  evenExpenses.forEach(e => {
+    const p = e.payer || '我';
+    const pGroup = payerGroups[p];
+    if (pGroup) {
+      const g = ensureGroup(pGroup);
+      g.paid += e.twd;
+      if (!g.members.includes(p)) g.members.push(p);
+    } else {
+      const g = ensureGroup(p);
+      g.paid += e.twd;
     }
+  });
+  // Add groups/payers with headcount but no even-split payments
+  for (const [k, hc] of Object.entries(groupHeadcount)) {
+    const g = ensureGroup(k);
+    g.headcount = hc;
   }
 
+  // Even-split balance
   const balance = {};
   for (const [k, d] of Object.entries(grpData)) {
-    balance[k] = d.paid - perHead * d.headcount;
+    balance[k] = d.paid - evenPerHead * d.headcount;
+  }
+
+  // Overlay personal expenses: adjust balances between groups
+  // personalExpense: twd=X, paid by P, assigned to A
+  // -> Group of A owes X more (A should bear the cost)
+  // -> Group of P gets X more credit (P paid on behalf of A)
+  for (const pe of personalExpenses) {
+    const payerName = pe.payer || '我';
+    const payerGroup = payerGroups[payerName] || payerName;
+    const personalName = pe.personalPayer;
+    const personalGroup = payerGroups[personalName] || personalName;
+    if (personalGroup === payerGroup) {
+      // Same group - no net effect on group balance
+      continue;
+    }
+    if (!balance[personalGroup]) balance[personalGroup] = 0;
+    if (!balance[payerGroup]) balance[payerGroup] = 0;
+    balance[personalGroup] -= pe.twd;  // this group owes more
+    balance[payerGroup] += pe.twd;     // this group gets credit
+  }
+
+  // Also include prepaid TWD in the balance (per person)
+  // Add prepaid to payer's group credit
+  for (const [p, pp] of Object.entries(payerPrepaid)) {
+    const ppTwd = getPrepaidTwd(p);
+    if (ppTwd <= 0) continue;
+    const pGroup = payerGroups[p] || p;
+    if (balance[pGroup] !== undefined) {
+      balance[pGroup] += ppTwd;
+    } else {
+      // Payer with prepaid but not in any expense group — add them
+      const g = ensureGroup(pGroup);
+      g.paid = 0;
+      g.headcount = groupHeadcount[pGroup] || (payerHeads[p] || 1);
+      if (!g.members.includes(p)) g.members.push(p);
+      balance[pGroup] = ppTwd - evenPerHead * g.headcount;
+    }
   }
 
   const debtors = Object.entries(balance).filter(([, v]) => v < -1).sort((a, b) => a[1] - b[1]);
   const creditors = Object.entries(balance).filter(([, v]) => v > 1).sort((a, b) => b[1] - a[1]);
 
-  if (debtors.length === 0 && creditors.length === 0) {
-    resultEl.style.display = 'block';
-    resultEl.innerHTML = '<div style="color:#999;text-align:center;padding:8px;">帳目已平，無需結算</div>';
-    return;
-  }
-
+  // Build per-group member label
   function groupLabel(k) {
     const d = grpData[k];
-    const members = d.members.filter(m => m !== k);
+    if (!d) return escHtml(k);
+    const members = d.members ? d.members.filter(m => m !== k) : [];
     const suffix = members.length > 0 ? ' (' + members.map(escHtml).join(', ') + ')' : '';
     return escHtml(d.label || k) + suffix;
   }
 
-  let html = '<div style="font-size:0.8rem;font-weight:600;margin-bottom:8px;">💰 結算（每人平均 NT$ ' + fmt(Math.round(perHead)) + '，總人數 ' + heads + '）</div>';
-  for (const [dName, dVal] of debtors) {
-    const need = Math.round(-dVal);
-    html += '<div style="font-size:0.85rem;padding:4px 0;">';
-    html += '<span style="color:#dc2626;font-weight:600;">' + groupLabel(dName) + '</span> 須補 <strong>NT$ ' + fmt(need) + '</strong>';
-    let remaining = need;
-    const payTo = [];
-    for (const [cName, cVal] of creditors) {
-      if (remaining <= 0) break;
-      const receive = Math.round(Math.min(cVal, remaining));
-      if (receive > 0) {
-        payTo.push(groupLabel(cName) + ' NT$ ' + fmt(receive));
-        remaining -= receive;
+  let hasPersonalNote = personalExpenses.length > 0;
+  let html = '<div style="font-size:0.8rem;font-weight:600;margin-bottom:8px;">💰 結算（每人平均 NT$ ' + fmt(Math.round(evenPerHead)) + '，總人數 ' + heads + '）</div>';
+  if (hasPersonalNote) {
+    html += '<div style="font-size:0.7rem;color:#d97706;margin-bottom:6px;">⚠️ 含 ' + personalExpenses.length + ' 筆指定負擔支出（依群組調整）</div>';
+  }
+
+  if (debtors.length === 0 && creditors.length === 0) {
+    html += '<div style="color:#999;text-align:center;padding:8px;">帳目已平，無需結算</div>';
+  } else {
+    for (const [dName, dVal] of debtors) {
+      const need = Math.round(-dVal);
+      html += '<div style="font-size:0.85rem;padding:4px 0;">';
+      html += '<span style="color:#dc2626;font-weight:600;">' + groupLabel(dName) + '</span> 須補 <strong>NT$ ' + fmt(need) + '</strong>';
+      let remaining = need;
+      const payTo = [];
+      for (const [cName, cVal] of creditors) {
+        if (remaining <= 0) break;
+        const receive = Math.round(Math.min(cVal, remaining));
+        if (receive > 0) {
+          payTo.push(groupLabel(cName) + ' NT$ ' + fmt(receive));
+          remaining -= receive;
+        }
       }
+      if (payTo.length > 0) {
+        html += ' → ' + payTo.join('、');
+      }
+      html += '</div>';
     }
-    if (payTo.length > 0) {
-      html += ' → ' + payTo.join('、');
-    }
-    html += '</div>';
   }
 
   resultEl.innerHTML = html;
@@ -965,8 +1047,8 @@ $('btnExportCSV').onclick = () => {
     '#卡片/支付: ' + JSON.stringify(paymentMethods),
     '#旅遊人數: ' + totalPeople,
   ];
-  const header = ['id','日期','分類','項目','外幣金額','幣別','匯率','TWD','支付方式','卡片/支付','付款人'];
-  const rows = expenses.map(e => [e.id, e.date, e.category, e.desc, e.amount, e.currency, e.rate, e.twd, e.payment, e.paymentMethod || '', e.payer || '我'].map(csvCell));
+  const header = ['id','日期','分類','項目','外幣金額','幣別','匯率','TWD','支付方式','卡片/支付','付款人','分攤方式','負擔人'];
+  const rows = expenses.map(e => [e.id, e.date, e.category, e.desc, e.amount, e.currency, e.rate, e.twd, e.payment, e.paymentMethod || '', e.payer || '我', e.splitType || 'even', (e.splitType === 'personal' ? (e.personalPayer || '') : '')].map(csvCell));
   const csv = '\uFEFF' + configLines.join('\n') + '\n' + header.join(',') + '\n' + rows.map(r => r.join(',')).join('\n');
   // Download file
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -1026,9 +1108,11 @@ function importCsvText(text) {
     const payment = row[idIdx >= 0 ? 8 : 7] || '現金';
     const paymentMethod = row[idIdx >= 0 ? 9 : 8] || '';
     const payer = row[idIdx >= 0 ? 10 : 9] || '我';
+    const splitType = (row.length > (idIdx >= 0 ? 11 : 10)) ? (row[idIdx >= 0 ? 11 : 10] || 'even') : 'even';
+    const personalPayer = splitType === 'personal' && row.length > (idIdx >= 0 ? 12 : 11) ? (row[idIdx >= 0 ? 12 : 11] || '') : '';
     const newId = id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 5));
     const twd = currency === 'TWD' ? Math.round(amount) : Math.round(amount * rate);
-    expenses.push({ id: newId, date, category: cat, desc, amount, currency, rate, twd, payment, payer, paymentMethod });
+    expenses.push({ id: newId, date, category: cat, desc, amount, currency, rate, twd, payment, payer, paymentMethod, splitType, personalPayer });
     if (payer && !payers.includes(payer)) {
       payers.push(payer);
       payerHeads[payer] = 1;
@@ -1086,6 +1170,14 @@ $('csvFileInput').onchange = () => {
   };
   reader.readAsText(file);
 };
+
+function onSplitTypeChange(prefix) {
+  const group = document.getElementById(prefix + 'PersonalPayerGroup');
+  const sel = document.getElementById(prefix + 'PersonalPayer');
+  const val = document.getElementById(prefix + 'SplitType').value;
+  group.style.display = val === 'personal' ? '' : 'none';
+  if (val === 'personal' && payers.length > 0 && !sel.value) sel.value = payers[0];
+}
 
 // clear all
 $('btnClearAll').onclick = () => {
