@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>昇龍道之旅 · 旅遊圖卡</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Noto Sans TC', sans-serif; background: #faf9f6; color: #2c2c2c; }
+.header {
+  text-align: center; padding: 40px 20px 20px;
+  background: linear-gradient(135deg, #fff5f5, #fff8e7, #f0f5ff);
+  border-bottom: 2px solid #e0ddd5;
+}
+.header h1 { font-size: 1.8em; font-weight: 900; color: #c43e3e; }
+.header p { font-size: 0.88em; color: #7a7a6e; margin-top: 4px; }
+.header .meta { font-size: 0.78em; color: #999; margin-top: 2px; }
+.section-title { max-width: 700px; margin: 24px auto 4px; padding: 0 16px; font-size: 0.9em; font-weight: 700; color: #c43e3e; }
+.gallery { max-width: 700px; margin: 0 auto; padding: 12px 16px 30px; display: grid; grid-template-columns: 1fr; gap: 16px; }
+.gallery.two { grid-template-columns: 1fr 1fr; }
+@media (max-width: 500px) { .gallery.two { grid-template-columns: 1fr; } }
+.card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 3px 14px rgba(0,0,0,.08); position: relative; }
+.card img { width: 100%; display: block; cursor: zoom-in; }
+.caption { padding: 10px 14px; font-size: 0.82em; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+.caption .day { color: #c43e3e; }
+.caption .title { color: #555; }
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 100; justify-content: center; align-items: center; cursor: zoom-out; }
+.modal.active { display: flex; }
+.modal img { max-width: 92vw; max-height: 92vh; border-radius: 8px; }
+.footer { text-align: center; padding: 30px 20px; color: #999; font-size: 0.75em; }
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>⛩️ 昇龍道之旅 · 旅遊圖卡</h1>
+<p>2026.7.2 — 7.9 · 愛知・岐阜・石川・富山</p>
+<div class="meta">🚗 NIPPON 廂型車 ｜ 全程免費國道 ｜ 5人</div>
+</div>
+
+<div class="section-title">📌 總行程一覽</div>
+<div class="gallery">
+<div class="card">
+<img src="card_overview.png" onclick="openModal(this)">
+<div class="caption"><span class="day">總覽</span><span class="title">昇龍道 8 天完整行程</span></div>
+</div>
+</div>
+
+<div class="section-title">📌 每日行程</div>
+<div class="gallery two">
+
+<div class="card">
+<img src="day1.png" onclick="openModal(this)">
+<div class="caption"><span class="day">Day 1</span><span class="title">台北→名古屋</span></div>
+</div>
+
+<div class="card">
+<img src="day2.png" onclick="openModal(this)">
+<div class="caption"><span class="day">Day 2</span><span class="title">名古屋→金澤</span></div>
+</div>
+
+<div class="card">
+<img src="day3.png" onclick="openModal(this)">
+<div class="caption"><span class="day">Day 3</span><span class="title">金澤全日</span></div>
+</div>
+
+<div class="card">
+<img src="day4.png" onclick="openModal(this)">
+<div class="caption"><span class="day">Day 4</span><span class="title">金澤→白川鄉→高山</span></div>
+</div>
+
+<div class="card">
+<img src="day5.png" onclick="openModal(this)">
+<div class="caption"><span class="day">Day 5</span><span class="title">高山（三選一）</span></div>
+</div>
+
+<div class="card">
+<img src="day6.png" onclick="openModal(this)">
+<div class="caption"><span class="day">Day 6</span><span class="title">高山→名古屋</span></div>
+</div>
+
+<div class="card">
+<img src="day7.png" onclick="openModal(this)">
+<div class="caption"><span class="day">Day 7</span><span class="title">名古屋全日</span></div>
+</div>
+
+<div class="card">
+<img src="day8.png" onclick="openModal(this)">
+<div class="caption"><span class="day">Day 8</span><span class="title">名古屋→台北</span></div>
+</div>
+
+</div>
+
+<div class="modal" id="modal" onclick="closeModal()">
+<img id="modalImg">
+</div>
+
+<div class="footer">
+<p>🚗 全程實際總里程約 575~605km · 過路費 ¥0 · 油錢約 ¥13,000</p>
+<p>🏠 住宿：名鉄イン金山(3晚) + WeskiiHotel(2晚) + Hida-Takayama Michi(2晚)</p>
+<p style="margin-top:6px;color:#bbb;font-size:0.75em">如果圖卡放錯位置，跟我說「第 X 張不對」就好</p>
+</div>
+
+<script>
+function openModal(img) {
+  document.getElementById('modalImg').src = img.src;
+  document.getElementById('modal').classList.add('active');
+}
+function closeModal() { document.getElementById('modal').classList.remove('active'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>

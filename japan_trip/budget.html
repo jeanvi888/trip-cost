@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💰 昇龍道 8 天 7 夜 — 預算追蹤</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', 'Noto Sans TC', sans-serif; background: #f0f4f8; color: #333; padding: 20px; }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { text-align: center; font-size: 1.6em; margin-bottom: 4px; }
+  .subtitle { text-align: center; color: #666; margin-bottom: 24px; font-size: 0.9em; }
+  .section { background: #fff; border-radius: 12px; margin-bottom: 20px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+  .section h2 { font-size: 1.1em; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #eee; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88em; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #eee; }
+  th { background: #f8f9fa; font-weight: 600; color: #555; white-space: nowrap; }
+  .paid { color: #27ae60; font-weight: 600; }
+  .unpaid { color: #e74c3c; font-weight: 600; }
+  .amt { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .highlight { background: #eafaf1; }
+  .warning { background: #fef9e7; }
+  .danger { background: #fdedec; }
+  .total-row { font-weight: 700; background: #edf2f7; }
+  .total-row td { border-top: 2px solid #333; }
+  .progress-item { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
+  .progress-check { width: 18px; height: 18px; accent-color: #27ae60; cursor: pointer; }
+  .progress-label { flex: 1; font-size: 0.9em; }
+  .progress-date { color: #888; font-size: 0.8em; white-space: nowrap; }
+  .progress-check:checked + .progress-label { text-decoration: line-through; color: #999; }
+  .gift-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 10px; }
+  .gift-card { background: #f8f9fa; border-radius: 8px; padding: 12px; }
+  .gift-card .name { font-weight: 600; }
+  .gift-card .price { color: #e67e22; margin-top: 4px; }
+  .gift-card .note { color: #888; font-size: 0.8em; margin-top: 2px; }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 12px; }
+  .summary-card { background: #f8f9fa; border-radius: 10px; padding: 16px; text-align: center; }
+  .summary-card .label { font-size: 0.8em; color: #888; }
+  .summary-card .value { font-size: 1.4em; font-weight: 700; margin-top: 4px; }
+  .summary-card .sub { font-size: 0.75em; color: #666; margin-top: 2px; }
+  .jpy { color: #e67e22; }
+  .twd { color: #2980b9; }
+  .edit-input { width: 80px; padding: 2px 4px; border: 1px solid #ddd; border-radius: 4px; text-align: right; font-size: 0.9em; }
+  .edit-input:focus { outline: none; border-color: #3498db; }
+  @media print { body { padding: 0; background: #fff; } .section { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; } .edit-input { border: none; } }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>💰 昇龍道 8 天 7 夜 — 預算追蹤表</h1>
+<p class="subtitle">5人團體 ｜ 7/2(四)~7/9(四) ｜ 🛣️ 全程免費國道（含417號冠山隧道）</p>
+
+<div class="section">
+<h2>✅ 已支付 / 已訂項目</h2>
+<table>
+<tr><th>項目</th><th>金額</th><th>狀態</th><th>付款日</th><th>備註</th></tr>
+<tr><td>✈️ 機票 CX530/CX531</td><td class="amt">TWD 102,960</td><td class="paid">✅ 已付</td><td>—</td><td>訂位代碼 FR26M5</td></tr>
+<tr><td>🚗 租車 NIPPON 廂型車</td><td class="amt">¥93,610</td><td class="unpaid">⏳ 現場付</td><td>7/3</td><td>Tabirai 預訂・<b>6/26 前免費取消（取車7天前）</b></td></tr>
+<tr><td>🏨 名鉄イン金山 7/2~7/3</td><td class="amt">¥27,180</td><td class="unpaid">⏳ 待付款</td><td>—</td><td>Agoda / 3間・<b>6/29 23:59前免費取消</b></td></tr>
+<tr><td>🏨 WeskiiHotel 金澤 7/3~7/5</td><td class="amt">¥39,164</td><td class="unpaid">⏳ 待付款</td><td>—</td><td>Booking / 高級公寓・<b>6/27 11:59前免費取消</b></td></tr>
+<tr><td>🏨 Hida-Takayama Michi 7/5~7/7</td><td class="amt">¥55,373</td><td class="unpaid">⏳ 待付款</td><td>—</td><td>Booking / 整棟公寓・<b>6/27 11:59前免費取消</b></td></tr>
+<tr><td>🏨 名鉄イン金山 7/7~7/9</td><td class="amt">¥55,751</td><td class="unpaid">⏳ 7/4 扣款</td><td>7/4</td><td>Agoda / 3間・<b>7/2 23:59前免費取消</b></td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>📊 總計</h2>
+<div class="summary-grid">
+<div class="summary-card"><div class="label">✈️ 機票（已付）</div><div class="value twd">TWD 102,960</div></div>
+<div class="summary-card"><div class="label">🏨 住宿（已訂）</div><div class="value jpy">¥177,468</div><div class="sub">名鉄金山¥82,931 + Weskii¥39,164 + Michi¥55,373</div></div>
+<div class="summary-card"><div class="label">🚗 租車（現場付）</div><div class="value jpy">¥93,610</div></div>
+<div class="summary-card"><div class="label">🍜 餐食+雜支（估）</div><div class="value jpy">¥245,000</div></div>
+<div class="summary-card" style="background:#eafaf1"><div class="label">🇯🇵 JPY 總計</div><div class="value jpy" style="font-size:1.6em">~¥516,000</div><div class="sub">每人約 ¥103,200｜省下高速費約¥18,000</div></div>
+<div class="summary-card" style="background:#eaf2f8"><div class="label">💵 TWD 總計（含機票）</div><div class="value twd" style="font-size:1.6em">TWD 215,000</div><div class="sub">每人約 TWD 43,000</div></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📝 預估花費（日幣） — 可填入實際金額</h2>
+<table id="est-table">
+<tr><th>項目</th><th>預估金額</th><th>實際金額</th><th>差額</th><th>備註</th></tr>
+<tr><td>⛽ 油費</td><td class="amt">¥13,000</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>全程免費國道，約600km</td></tr>
+<tr><td>🛣️ 高速通行費</td><td class="amt" style="text-decoration:line-through;color:#999;">¥18,000</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)" disabled style="background:#f5f5f5"></td><td class="amt diff">—</td><td>✅ 全程走免費國道，免高速費！</td></tr>
+<tr><td>🍽️ D1 晚餐</td><td class="amt">¥15,000</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>金山站周邊</td></tr>
+<tr><td>🍽️ D2 午+晚</td><td class="amt">¥20,000</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>休息站+金澤</td></tr>
+<tr><td>🍽️ D3 午+晚</td><td class="amt">¥20,000</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>近江町+金澤</td></tr>
+<tr><td>🍽️ D4 午+晚</td><td class="amt">¥20,000</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>白川鄉+高山</td></tr>
+<tr><td>🍽️ D5 午</td><td class="amt">¥12,500</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>上高地河童橋</td></tr>
+<tr><td>🍽️ D6 早+午+晚</td><td class="amt">¥25,000</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>朝市+高山+名古屋</td></tr>
+<tr><td>🍽️ D7 午+晚</td><td class="amt">¥20,000</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>HAERA 慶功宴</td></tr>
+<tr><td>🍽️ D8 午</td><td class="amt">¥12,500</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>FLIGHT OF DREAMS</td></tr>
+<tr><td>🏯 兼六園 門票</td><td class="amt">¥1,600</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>320円×5人</td></tr>
+<tr><td>🏯 高山陣屋 門票</td><td class="amt">¥2,200</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>440円×5人</td></tr>
+<tr><td>🚌 上高地接駁巴士</td><td class="amt">¥6,500</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>平湯↔上高地 來回</td></tr>
+<tr><td>🎨 金澤21世紀美術館</td><td class="amt">¥2,500</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>常設展 500円×5人</td></tr>
+<tr><td>🅿️ 停車費 合計</td><td class="amt">¥6,000</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>各景點約500~1,500/次</td></tr>
+<tr><td>🎁 其他雜支</td><td class="amt">¥10,000</td><td class="amt"><input class="edit-input" type="text" placeholder="—" oninput="calcDiff(this)"></td><td class="amt diff">—</td><td>飲料、御守、伴手禮</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>⏰ 付款時程</h2>
+<div id="payment-timeline">
+<div class="progress-item"><input type="checkbox" class="progress-check" id="p1" checked><label class="progress-label" for="p1" style="text-decoration:line-through;color:#999;">✅ 已取消：糸守町旅舍（Booking）</label><span class="progress-date">6/27 11:59</span></div>
+<div class="progress-item"><input type="checkbox" class="progress-check" id="p2"><label class="progress-label" for="p2">名鉄イン D1 扣款 ¥27,180（免費取消至 6/29 23:59）</label><span class="progress-date">6/28</span></div>
+<div class="progress-item"><input type="checkbox" class="progress-check" id="p3"><label class="progress-label" for="p3">NIPPON 現場付款 ¥93,610（免費取消至 6/26）</label><span class="progress-date">7/3</span></div>
+<div class="progress-item"><input type="checkbox" class="progress-check" id="p4"><label class="progress-label" for="p4">名鉄イン D6~D7 扣款 ¥55,751（免費取消至 7/2 23:59）</label><span class="progress-date">7/4</span></div>
+<div class="progress-item"><input type="checkbox" class="progress-check" id="p5"><label class="progress-label" for="p5">加油 + 還車</label><span class="progress-date">7/9</span></div>
+</div>
+</div>
+
+<div class="section">
+<h2>🎁 伴手禮預算參考</h2>
+<div class="gift-grid">
+<div class="gift-card"><div class="name">ちんや 蝦餅</div><div class="price">~¥1,000/袋</div><div class="note">機場必買</div></div>
+<div class="gift-card"><div class="name">赤福</div><div class="price">~¥1,600/盒</div><div class="note">伊勢名產，機場有</div></div>
+<div class="gift-card"><div class="name">飛驒地區限定伴手禮</div><div class="price">~¥1,500~3,000</div><div class="note">高山老街</div></div>
+<div class="gift-card"><div class="name">金澤金箔產品</div><div class="price">~¥1,000~5,000</div><div class="note">東茶屋街</div></div>
+<div class="gift-card"><div class="name">名古屋コーチン</div><div class="price">~¥1,500/袋</div><div class="note">機場</div></div>
+</div>
+</div>
+
+</div>
+<script>
+function calcDiff(input) {
+  var row = input.closest('tr');
+  var est = row.cells[1].innerText.replace(/[¥,]/g, '');
+  var act = input.value.replace(/[¥,]/g, '') || 0;
+  var diff = parseInt(est) - parseInt(act);
+  row.querySelector('.diff').innerText = diff !== 0 && input.value ? (diff > 0 ? '-¥' + diff.toLocaleString() : '+¥' + Math.abs(diff).toLocaleString()) : '—';
+}
+document.querySelectorAll('.progress-check').forEach(function(cb) {
+  cb.addEventListener('change', function() { this.parentElement.style.opacity = this.checked ? '0.5' : '1'; });
+});
+</script>
+</body>
+</html>

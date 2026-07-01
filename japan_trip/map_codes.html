@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>昇龍道 カーナビ Map Code 一覽</title>
+<style>
+:root { --bg: #faf9f6; --card-bg: #fff; --border: #e0ddd5; --text: #2c2c2c; --text-light: #7a7a6e; --accent: #c43e3e; --accent2: #2c6b4e; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Segoe UI', -apple-system, 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 20px; }
+.container { max-width: 1000px; margin: 0 auto; }
+h1 { font-size: 1.4em; text-align: center; color: var(--accent); margin-bottom: 4px; }
+.subtitle { text-align: center; color: var(--text-light); font-size: 0.82em; margin-bottom: 12px; }
+.day-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+.day-header { background: linear-gradient(135deg, #f5f3ee, #ebe8df); padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; }
+.day-header h2 { font-size: 0.95em; font-weight: 600; }
+.badge { font-size: 0.72em; background: var(--accent2); color: #fff; padding: 2px 10px; border-radius: 20px; white-space: nowrap; }
+.day-body { padding: 10px 14px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.82em; }
+th { background: #f0ede8; padding: 4px 8px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--border); }
+td { padding: 4px 8px; vertical-align: top; border-bottom: 1px solid #f0ede8; }
+td:nth-child(1) { width: 30px; color: var(--text-light); font-weight: 600; }
+td:nth-child(3) { font-family: 'Consolas', monospace; font-weight: 700; white-space: nowrap; color: #1a1a8a; }
+td:nth-child(4) { color: var(--text-light); font-size: 0.9em; }
+.confirmed { background: #e8f5e9; }
+.confirmed td:nth-child(3) { color: #1a6e1e; }
+.unconfirmed { background: #fff8e1; }
+.unconfirmed td:nth-child(3) { color: #b8860b; }
+.missing { background: #fce4e4; }
+.missing td:nth-child(3) { color: var(--accent); }
+.footer { text-align: center; font-size: 0.75em; color: var(--text-light); margin-top: 16px; padding: 10px; border-top: 1px solid var(--border); }
+@media print { body { padding: 0; background: #fff; } .day-card { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>昇龍道 カーナビ用 Map Code 完整一覽</h1>
+<p class="subtitle">2026/7/2~7/9 ｜ 資料來源：Mapion 電話帳、BestCarWeb 等 ｜ 綠 = 已確認  黃 = 待交叉驗證  紅 = 尚未取得</p>
+
+<div class="day-card" style="border-color:var(--accent2);">
+<div class="day-header" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9);"><h2>已確認 Map Code（7 點）</h2><span class="badge" style="background:var(--accent2);">NIPPON 車機可用</span></div>
+<div class="day-body">
+<p style="font-size:0.78em;color:#666;margin-bottom:6px;">交叉比對 Mapion 與其他來源確認無誤，可直接輸入。</p>
+<table>
+<tr><th>Day</th><th>景點</th><th>Map Code</th><th>來源</th></tr>
+<tr class="confirmed"><td>D2</td><td>NIPPON 金山站店（取車）</td><td>4 198 423*55</td><td>Mapion</td></tr>
+<tr class="confirmed"><td>D2</td><td>道之驛 星之故里藤橋（足湯）</td><td>242 850 749*11</td><td>Mapion</td></tr>
+<tr class="confirmed"><td>D2</td><td>永平寺</td><td>63 508 273*72</td><td>Mapion</td></tr>
+<tr class="confirmed"><td>D3</td><td>兼六園停車場</td><td>41 530 064*74</td><td>Mapion</td></tr>
+<tr class="confirmed"><td>D4</td><td>白川鄉 せせらぎ公園停車場</td><td>549 018 379*18</td><td>Mapion</td></tr>
+<tr class="confirmed"><td>D5</td><td>あかんだな停車場（上高地）</td><td>620 712 091*43</td><td>Mapion</td></tr>
+<tr class="confirmed"><td>D7</td><td>犬山城</td><td>70 188 182*80</td><td>Mapion</td></tr>
+</table>
+</div>
+</div>
+
+<div class="day-card">
+<div class="day-header"><h2>新查獲 Map Code（5 點）</h2><span class="badge">本次新增</span></div>
+<div class="day-body">
+<p style="font-size:0.78em;color:#666;margin-bottom:6px;">來自 Mapion 電話帳或媒體網站，建議實測確認。</p>
+<table>
+<tr><th>Day</th><th>景點</th><th>Map Code</th><th>來源</th></tr>
+<tr class="unconfirmed"><td>D4</td><td>高山陣屋</td><td>191 196 307*81</td><td>Mapion 電話帳</td></tr>
+<tr class="unconfirmed"><td>D3</td><td>21 世紀美術館</td><td>41 499 884*06</td><td>Mapion（巴士站）</td></tr>
+<tr class="unconfirmed"><td>D6</td><td>道之驛 清流の里しろとり</td><td>403 462 357*12</td><td>Mapion 電話帳</td></tr>
+<tr class="unconfirmed"><td>D6</td><td>道之驛 美並</td><td>289 383 646*51</td><td>Mapion 電話帳</td></tr>
+<tr class="unconfirmed"><td>D6</td><td>道之驛 ロック・ガーデンひちそう</td><td>70 719 602*34</td><td>Mapion + BestCarWeb</td></tr>
+</table>
+</div>
+</div>
+
+<div class="day-card">
+<div class="day-header"><h2>Day 2 名古屋 福井 金澤</h2><span class="badge" style="background:#e67e22;">取車日 195km</span></div>
+<div class="day-body">
+<table>
+<tr><th></th><th>景點</th><th>Map Code</th><th>備註</th></tr>
+<tr class="confirmed"><td>1</td><td>NIPPON 金山站店（取車）</td><td>4 198 423*55</td><td>已確認</td></tr>
+<tr class="confirmed"><td>2</td><td>道之驛 星之故里藤橋</td><td>242 850 749*11</td><td>已確認</td></tr>
+<tr class="confirmed"><td>3</td><td>永平寺</td><td>63 508 273*72</td><td>已確認</td></tr>
+<tr class="missing"><td>4</td><td>WeskiiHotel 金澤（停車場）</td><td>---</td><td>飯店未公開，可搜尋「金沢市広岡1-14-6」</td></tr>
+</table>
+</div>
+</div>
+
+<div class="day-card">
+<div class="day-header"><h2>Day 3 金澤全日（徒步巴士）</h2><span class="badge" style="background:#f1c40f;color:#333;">免用車</span></div>
+<div class="day-body">
+<table>
+<tr><th></th><th>景點</th><th>Map Code</th><th>備註</th></tr>
+<tr class="confirmed"><td>1</td><td>兼六園停車場</td><td>41 530 064*74</td><td>已確認</td></tr>
+<tr class="unconfirmed"><td>2</td><td>21 世紀美術館</td><td>41 499 884*06</td><td>已查獲</td></tr>
+<tr class="missing"><td>3</td><td>東茶屋街</td><td>---</td><td>車停兼六園，徒步圈</td></tr>
+<tr class="missing"><td>4</td><td>主計町茶屋街</td><td>---</td><td>東茶屋街旁步行</td></tr>
+<tr class="missing"><td>5</td><td>石浦神社</td><td>---</td><td>兼六園旁步行</td></tr>
+<tr class="missing"><td>6</td><td>近江町市場</td><td>---</td><td>徒步圈</td></tr>
+<tr class="missing"><td>7</td><td>長町武家屋敷跡</td><td>---</td><td>徒步圈</td></tr>
+</table>
+</div>
+</div>
+
+<div class="day-card">
+<div class="day-header"><h2>Day 4 金澤 白川鄉 高山</h2><span class="badge" style="background:#2ecc71;">120km</span></div>
+<div class="day-body">
+<table>
+<tr><th></th><th>景點</th><th>Map Code</th><th>備註</th></tr>
+<tr class="confirmed"><td>1</td><td>白川鄉 せせらぎ公園停車場</td><td>549 018 379*18</td><td>已確認</td></tr>
+<tr class="missing"><td>2</td><td>道之驛 飛驒白川</td><td>---</td><td>沿途休息站</td></tr>
+<tr class="missing"><td>3</td><td>御母衣湖展望台</td><td>---</td><td>國道景觀點</td></tr>
+<tr class="missing"><td>4</td><td>高山古街（さんまち通り）</td><td>---</td><td>可搜尋「さんまち通り 高山」</td></tr>
+<tr class="unconfirmed"><td>5</td><td>高山陣屋</td><td>191 196 307*81</td><td>已查獲</td></tr>
+<tr class="missing"><td>6</td><td>飛驒山王宮日枝神社</td><td>---</td><td>可搜尋「飛騨山王宮日枝神社」</td></tr>
+<tr class="missing"><td>7</td><td>BOSS 超市（高山店）</td><td>---</td><td>可搜尋「BOSS 高山店」</td></tr>
+</table>
+</div>
+</div>
+
+<div class="day-card">
+<div class="day-header"><h2>Day 5 高山三選一</h2><span class="badge" style="background:#1abc9c;">Plan A 用車</span></div>
+<div class="day-body">
+<table>
+<tr><th></th><th>景點</th><th>Map Code</th><th>備註</th></tr>
+<tr class="confirmed"><td>1</td><td>あかんだな停車場（上高地）</td><td>620 712 091*43</td><td>已確認</td></tr>
+<tr class="missing"><td>2</td><td>平湯巴士總站</td><td>---</td><td>接駁車處</td></tr>
+<tr class="missing"><td>3</td><td>宮川朝市</td><td>---</td><td>可搜尋「宮川朝市」</td></tr>
+<tr class="missing"><td>4</td><td>吉島家住宅</td><td>---</td><td>高山徒步</td></tr>
+<tr class="missing"><td>5</td><td>飛驒古川（氣多若宮神社）</td><td>---</td><td>可搜尋「飛騨古川駅」</td></tr>
+</table>
+</div>
+</div>
+
+<div class="day-card">
+<div class="day-header"><h2>Day 6 高山 名古屋</h2><span class="badge" style="background:#3498db;">150km 還車日</span></div>
+<div class="day-body">
+<table>
+<tr><th></th><th>景點</th><th>Map Code</th><th>備註</th></tr>
+<tr class="unconfirmed"><td>1</td><td>道之驛 美並</td><td>289 383 646*51</td><td>已查獲（郡上コース）</td></tr>
+<tr class="unconfirmed"><td>2</td><td>道之驛 清流の里しろとり</td><td>403 462 357*12</td><td>已查獲（郡上コース）</td></tr>
+<tr class="unconfirmed"><td>3</td><td>道之驛 ロック・ガーデンひちそう</td><td>70 719 602*34</td><td>已查獲（B2 コース）</td></tr>
+<tr class="missing"><td>4</td><td>道之驛 アルプ飛騨古川</td><td>---</td><td>B2 コース，可搜尋站名</td></tr>
+<tr class="missing"><td>5</td><td>道之驛 飛驒街道なぎさ</td><td>---</td><td>B2 コース</td></tr>
+<tr class="missing"><td>6</td><td>道之驛 美濃白川</td><td>---</td><td>B2 コース</td></tr>
+<tr class="missing"><td>7</td><td>郡上八幡（老街入口）</td><td>---</td><td>A コース，可搜尋「郡上八幡旧庁舎」</td></tr>
+</table>
+</div>
+</div>
+
+<div class="day-card">
+<div class="day-header"><h2>Day 7 8 名古屋 機場（無車）</h2><span class="badge" style="background:#9b59b6;">電車移動</span></div>
+<div class="day-body">
+<table>
+<tr><th></th><th>景點</th><th>Map Code</th><th>備註</th></tr>
+<tr class="confirmed"><td>1</td><td>犬山城</td><td>70 188 182*80</td><td>已確認</td></tr>
+<tr class="missing"><td>2</td><td>則武之森 AEON MALL</td><td>---</td><td>電車可達</td></tr>
+<tr class="missing"><td>3</td><td>榮商圈（Sakae）</td><td>---</td><td>地下鐵</td></tr>
+<tr class="missing"><td>4</td><td>大須觀音商店街</td><td>---</td><td>地下鐵</td></tr>
+<tr class="missing"><td>5</td><td>中部國際空港</td><td>---</td><td>名鐵直達</td></tr>
+</table>
+</div>
+</div>
+
+<div class="day-card">
+<div class="day-header"><h2>替代方案：日文關鍵字搜尋</h2><span class="badge" style="background:#1a73e8;">NIPPON 車機用</span></div>
+<div class="day-body">
+<p style="font-size:0.82em;color:#555;">若 Map Code 無法使用，請改用日文關鍵字搜尋：</p>
+<table>
+<tr><th>Day</th><th>景點</th><th>建議關鍵字</th></tr>
+<tr><td>D2</td><td>WeskiiHotel</td><td>「金沢市広岡1-14-6」地址輸入</td></tr>
+<tr><td>D3</td><td>東茶屋街</td><td>「ひがし茶屋街」</td></tr>
+<tr><td>D3</td><td>近江町市場</td><td>「近江町市場」</td></tr>
+<tr><td>D4</td><td>高山古街</td><td>「さんまち通り 高山」</td></tr>
+<tr><td>D4</td><td>日枝神社</td><td>「飛騨山王宮日枝神社」</td></tr>
+<tr><td>D4</td><td>BOSS 超市</td><td>「BOSS 高山店」</td></tr>
+<tr><td>D5</td><td>宮川朝市</td><td>「宮川朝市」</td></tr>
+<tr><td>D5</td><td>飛驒古川</td><td>「飛騨古川駅」</td></tr>
+<tr><td>D6</td><td>郡上八幡</td><td>「郡上八幡旧庁舎記念館」</td></tr>
+<tr><td>D6</td><td>アルプ飛騨古川</td><td>「アルプ飛騨古川」</td></tr>
+</table>
+</div>
+</div>
+
+<div class="footer">
+<p>Map Code 是 DENSO 註冊商標。NIPPON 車載導航（Toyota / Honda / Nissan）皆支援直接輸入。</p>
+<p>若 Map Code 無法定位，請改用日文關鍵字搜尋或直接輸入地址。</p>
+<p>建立日期：2026/6/18 ｜ 資料來源：Mapion（マピオン電話帳）、BestCarWeb、Yuru-to</p>
+</div>
+
+</div>
+</body>
+</html>

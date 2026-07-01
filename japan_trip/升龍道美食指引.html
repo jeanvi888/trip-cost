@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>昇龍道美食指引</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Noto Sans TC', 'Segoe UI', sans-serif;
+  background: #faf9f6; color: #2c2c2c; line-height: 1.7; padding: 20px;
+}
+.container { max-width: 820px; margin: 0 auto; }
+h1 { text-align: center; font-size: 1.5em; color: #c43e3e; margin-bottom: 4px; }
+.subtitle { text-align: center; color: #888; font-size: 0.82em; margin-bottom: 16px; }
+.legend { background: #fff; border: 1px solid #e0ddd5; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; font-size: 0.82em; }
+.legend h3 { font-size: 0.9em; margin-bottom: 4px; color: #555; }
+.legend span { display: inline-block; margin-right: 12px; }
+.legend .yen1 { color: #27ae60; font-weight: 700; }
+.legend .yen2 { color: #e67e22; font-weight: 700; }
+.legend .yen3 { color: #c0392b; font-weight: 700; }
+.day-card {
+  border-radius: 10px; margin-bottom: 18px; overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+.day-header {
+  padding: 10px 16px; font-size: 0.95em; font-weight: 600;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;
+}
+.day-body { padding: 10px 16px; }
+.day-body table { width: 100%; border-collapse: collapse; font-size: 0.84em; margin-bottom: 6px; }
+.day-body td { padding: 5px 6px; vertical-align: top; border-bottom: 1px solid #eee; }
+.day-body td:first-child { width: 90px; font-weight: 600; color: #666; white-space: nowrap; }
+.resto-name { font-weight: 700; font-size: 1.02em; }
+.price { display: inline-block; font-weight: 700; margin-left: 6px; }
+.price-yen1 { color: #27ae60; }
+.price-yen2 { color: #e67e22; }
+.price-yen3 { color: #c0392b; }
+.cuisine { color: #888; font-size: 0.88em; margin-left: 4px; }
+.desc { color: #555; font-size: 0.92em; margin-top: 1px; }
+.notes { color: #999; font-size: 0.85em; font-style: italic; margin-top: 1px; }
+.day1 .day-header { background: #e74c3c; color: #fff; }
+.day1 .day-body { background: #fff5f5; }
+.day1 .day-body td:first-child { width: auto; white-space: normal; }
+.day2 .day-header { background: #e67e22; color: #fff; }
+.day2 .day-body { background: #fff8f0; }
+.day2 .day-body td:first-child { width: auto; white-space: normal; }
+.day3 .day-header { background: #f1c40f; color: #333; }
+.day3 .day-body { background: #fffff0; }
+.day3 .day-body td:first-child { width: auto; white-space: normal; }
+.day4 .day-header { background: #2ecc71; color: #fff; }
+.day4 .day-body { background: #f0fff4; }
+.day4 .day-body td:first-child { width: auto; white-space: normal; }
+.day5 .day-header { background: #1abc9c; color: #fff; }
+.day5 .day-body { background: #f0fffa; }
+.day6 .day-header { background: #3498db; color: #fff; }
+.day6 .day-body { background: #f0f8ff; }
+.day7 .day-header { background: #9b59b6; color: #fff; }
+.day7 .day-body { background: #f8f0ff; }
+.day8 .day-header { background: #34495e; color: #fff; }
+.day8 .day-body { background: #f5f5f5; }
+@media (max-width: 600px) {
+  .day-body td:first-child { width: 70px; font-size: 0.82em; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>昇龍道美食指引</h1>
+<p class="subtitle">2026年7月 5人家庭自駕旅 · 名古屋→福井→金澤→白川鄉→高山→名古屋</p>
+
+<div class="legend">
+<h3>價格約定</h3>
+<span><span class="yen1">¥</span> = 約100–1000</span>
+<span><span class="yen2">¥¥</span> = 約1000–3000</span>
+<span><span class="yen3">¥¥¥</span> = 約3000+</span>
+<p style="margin-top:8px;color:#999;font-size:0.82em;">📱 小紅書網友推薦：<a href="https://www.rednote.com/explore/6673a3a0000000001c0366a1" target="_blank">@發財cc</a> · <a href="https://www.rednote.com/explore/68ea1ab80000000007008301" target="_blank">@我是YANG呀</a> · <a href="https://www.rednote.com/explore/67f364e3000000001b03d376" target="_blank">@雨杭圆</a></p>
+</div>
+<div class="day-card day1">
+<div class="day-header"><span>Day 1 · 7/2 (四) — 名古屋</span><span style="font-size:0.78em;opacity:.8;">無車日</span></div>
+<div class="day-body">
+<table>
+<tr><td colspan="5" style="padding:6px 8px;background:#f0d0c0;color:#7a3020;font-weight:700;font-size:0.88em;">晚餐 · 金山站周邊（名鉄イン金山徒步圈）</td></tr>
+<tr>
+<td style="width:24px;text-align:center;"><input type="checkbox"></td>
+<td style="width:16%;" class="resto-name">蓬萊軒 本店（熱田） <a href="https://www.google.com/maps/search/蓬萊軒+本店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td style="width:22%;">鰻魚三吃（ひつまぶし）</td>
+<td style="width:13%;"><b>¥3,500〜5,000</b></td>
+<td>金山→名鐵神宮前2分・徒歩5分・排隊名店・建議中午去</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">世界の山ちゃん 金山店 <a href="https://www.google.com/maps/search/世界の山ちゃん+金山店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>手羽先（燒雞翅）</td>
+<td><b>¥1,500〜3,000</b></td>
+<td>金山站前・名古屋名物・可外帶回飯店</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">矢場とん 金山店 <a href="https://www.google.com/maps/search/矢場とん+金山店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>味噌カツ（味噌豬排）</td>
+<td><b>¥1,500〜3,000</b></td>
+<td>金山站前・厚切豬排淋赤味噌</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">焼き鳥 きんざん 金山本店 <a href="https://www.google.com/maps/search/焼き鳥+きんざん+金山本店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>燒鳥(烤雞串)・名古屋交趾雞</td>
+<td><b>¥3,000〜4,500</b></td>
+<td>金山站附近・赤味噌醬烤串・小紅書大推</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">感動の肉と米 金山店 <a href="https://www.google.com/maps/search/感動の肉と米+金山店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>牛排・鐵板燒</td>
+<td><b>¥1,100〜2,500</b></td>
+<td>金山站步行1分・鐵板自烤・僅收現金</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">イオン金山店 <a href="https://www.google.com/maps/search/イオン+金山店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>超市・水蜜桃・水果</td>
+<td><b>¥〜</b></td>
+<td>飯店後門步行1分・買水果飲料宵夜超方便</td>
+</tr>
+</table>
+</div></div>
+<div class="day-card day2">
+<div class="day-header"><span>Day 2 · 7/3 (五) — 名古屋 → 福井 → 金澤</span><span style="font-size:0.78em;opacity:.8;">→永平寺</span></div>
+<div class="day-body">
+<table>
+<tr><td colspan="5" style="padding:6px 8px;background:#f0e0cc;color:#7a4d2a;font-weight:700;font-size:0.88em;border-radius:4px;">午餐 · 永平寺周邊（寺門前徒步圈） — そば（蕎麥麵）系</td></tr>
+<tr>
+<td style="width:24px;text-align:center;"><input type="checkbox"></td>
+<td style="width:15%;" class="resto-name">井の上（井之上） <a href="https://www.google.com/maps/search/井の上" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td style="width:22%;">越前蕎麥・精進料理(素食)</td>
+<td style="width:14%;"><b>¥1,760</b></td>
+<td>山門徒步5分／停車位70台・全年無休</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">てらぐち（寺口） <a href="https://www.google.com/maps/search/てらぐち" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>手打蕎麥(手打ちそば)</td>
+<td><b>¥900〜</b></td>
+<td>山門徒步1分／有伴手禮(お土産)販售</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">りうぜん（龍禪） <a href="https://www.google.com/maps/search/りうぜん" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>永平寺手打蕎麥</td>
+<td><b>¥1,500</b></td>
+<td>沿參道・週四定休</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">けんぞうそば（健三蕎麥） <a href="https://www.google.com/maps/search/けんぞうそば" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>十割手打蕎麥(100%蕎麥)</td>
+<td><b>¥1,200〜2,000</b></td>
+<td>車5分松岡／月曜定休（週一）・Tabelog第一</td>
+</tr>
+<tr><td colspan="5" style="padding:6px 8px;background:#f0e0cc;color:#7a4d2a;font-weight:700;font-size:0.88em;">永平寺周邊 · そば以外（蕎麥麵以外）</td></tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">矢の屋（矢之屋） <a href="https://www.google.com/maps/search/矢の屋" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>ソースかつ丼（醬汁豬排飯）</td>
+<td><b>¥1,200〜1,500</b></td>
+<td>車5分／家庭式・窗邊可看永平寺景色</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">熟成かつ 天膳 本店 <a href="https://www.google.com/maps/search/熟成かつ+天膳+本店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>とんかつ（炸豬排）</td>
+<td><b>¥1,500〜2,000</b></td>
+<td>車8分／永平寺町本店</td>
+</tr>
+<tr><td colspan="5" style="padding:6px 8px;background:#f0e0cc;color:#7a4d2a;font-weight:700;font-size:0.88em;">永平寺 · 甘味・デザート（甜品・點心）</td></tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">山侊（山侊） <a href="https://www.google.com/maps/search/山侊" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>御利益だんご（御守糰子）</td>
+<td><b>¥500〜1,000</b></td>
+<td>山門徒步2分／購物¥1,000以上停車免費</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">永平寺だるまぷりん <a href="https://www.google.com/maps/search/永平寺だるまぷりん" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>達磨造型布丁</td>
+<td><b>¥350（單）¥600（2入）</b></td>
+<td>井の上旁貨櫃屋</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">アトリエ菓修（菓修工坊） <a href="https://www.google.com/maps/search/アトリエ菓修" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>アップルパイ（蘋果派）</td>
+<td><b>¥400〜500</b></td>
+<td>一休蕎麥店內／僅供外帶・季節限定〜5月</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">團助（だんすけ） <a href="https://www.google.com/maps/search/團助" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>ごま豆腐（芝麻豆腐）専門</td>
+<td><b>¥800〜1,000</b></td>
+<td>山門徒步7分／1888年(明治21年)創業</td>
+</tr>
+<tr><td colspan="5" style="padding:6px 8px;background:#f0e0cc;color:#7a4d2a;font-weight:700;font-size:0.88em;">永平寺周邊 · カフェ・フレンチ（咖啡廳・法式）</td></tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">La poste（ラ ポスト） <a href="https://www.google.com/maps/search/La+poste" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>カジュアルフレンチ（休閒法式）</td>
+<td><b>¥2,000〜2,500</b></td>
+<td>車10分／舊郵局改建・沙拉吧無限續・需預約・週一二三休</td>
+</tr>
+<tr><td colspan="5" style="padding:6px 8px;background:#e8d5b0;color:#5a4a2a;font-weight:700;font-size:0.88em;">晚餐 · 金澤車站西口（WeskiiHotel 步行圈）</td></tr>
+<tr style="background:#fff8ec;">
+<td colspan="5" style="padding:5px 8px;color:#7a5a2a;font-size:0.82em;border-bottom:1px dashed #d0c090;">
+⏰ 從永平寺開車約1.5hr到金澤，check-in後可步行覓食。車站西口（金澤港口側）餐廳集中，不用再開車
+</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">魚がし食堂 Rinto店 <a href="https://www.google.com/maps/search/魚がし食堂+Rinto+金沢駅" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td style="width:22%;">海鮮丼・定食</td>
+<td style="width:13%;"><b>¥1,000〜3,000</b></td>
+<td>金沢百番街Rinto(駅直結)・門口取號機・量大新鮮・招牌丼超大份・下午2點錯峰等十幾分・近江市場也有分店但這邊人少</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">サイゼリヤ 金沢駅西口店 <a href="https://www.google.com/maps/search/サイゼリヤ+金沢駅西口店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td style="width:22%;">義式家庭餐廳(イタリアン)</td>
+<td style="width:13%;"><b>¥600〜1,000</b></td>
+<td>徒歩2分／安心穩定・飲料吧¥200・長輩小孩都行</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">うなぎ四代目菊川 <a href="https://www.google.com/maps/search/うなぎ四代目菊川+クロスゲート金沢" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>うなぎ（鰻魚飯）</td>
+<td><b>¥2,000〜3,000</b></td>
+<td>徒歩4分(金澤Cross Gate 2F)・1932年創業・11:00〜15:00 / 17:00〜22:00</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">能加万菜 市 <a href="https://www.google.com/maps/search/能加万菜+市+クロスゲート金沢" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>金澤郷土料理</td>
+<td><b>¥1,500〜3,000</b></td>
+<td>徒歩4分(金澤Cross Gate 2F)・定食到居酒屋・在地食材</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">もりもり寿し 金沢駅前店 <a href="https://www.google.com/maps/search/もりもり寿し+金沢駅" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>回転寿司（迴轉壽司）</td>
+<td><b>¥1,500〜3,000</b></td>
+<td>徒歩5分(金澤百番街・車站商場)・能登直送・8:00〜21:00</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">麺屋大河 <a href="https://www.google.com/maps/search/麺屋大河+金沢駅" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>味噌拉麵專門(味噌ラーメン)</td>
+<td><b>¥1,000〜1,500</b></td>
+<td>駅東口徒歩4分(西口から駅構内抜けて15分)・百名店2022~2025・12席全カウンター・預約不可・排隊20~60分常態・月曜不定休</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">魚がし酒場 魚せん 広岡店 <a href="https://www.google.com/maps/search/魚がし酒場+魚せん+広岡店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>海鮮居酒屋</td>
+<td><b>¥3,000〜4,000</b></td>
+<td>徒歩5分／紅喉(のどぐろ)・鮮魚・多人可</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">NEW DELHI 金沢駅前店 <a href="https://www.google.com/maps/search/NEW+DELHI+金沢駅前店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>インドカレー（印度咖哩）</td>
+<td><b>¥1,000〜2,000</b></td>
+<td>徒歩4分(金澤Cross Gate 2F)・換口味・午餐¥900〜</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">旅亭 まんぷく <a href="https://www.google.com/maps/search/旅亭+まんぷく+クロスゲート金沢" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>焼肉</td>
+<td><b>¥2,000〜5,000</b></td>
+<td>徒歩4分(金澤Cross Gate 2F)・蔥鹽牛舌創始・人氣店</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">金澤おでん 若葉 <a href="https://www.google.com/maps/search/金澤おでん+若葉+石川県金沢市石引" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>關東煮(おでん)</td>
+<td><b>¥1,500〜3,000</b></td>
+<td>石引商店街（兼六園東南側徒歩15分）・金澤關東煮名店・車麩・海螺(バイ貝)・茶泡飯(茶飯)<br><img src="https://tblg.k-img.com/restaurant/images/Rvw/48347/640x640_rect_48347870.jpg" style="width:100px;border-radius:6px;margin-top:4px;" alt="金澤おでん若葉"></td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">近江町市場 夜の部 <a href="https://www.google.com/maps/search/近江町市場" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>海鮮・居酒屋</td>
+<td><b>¥2,000〜4,000</b></td>
+<td>車5分or徒歩15分・あまつぼ(〜21:00)・市の蔵(〜22:00)等夜間營業店あり</td>
+</tr>
+<tr><td colspan="5" style="padding:6px 8px;background:#e8d5b0;color:#5a4a2a;font-weight:700;font-size:0.88em;">食後デザート（散步範圍）</td></tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">金箔ソフトクリーム <a href="https://www.google.com/maps/search/金沢+金箔ソフト" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>金箔ソフト（金箔冰淇淋）</td>
+<td><b>¥500〜900</b></td>
+<td>駅構内・兼六園周邊等多家有售・拍照打卡必買</td>
+</tr>
+</table>
+</div></div>
+<div class="day-card day3">
+<div class="day-header"><span>Day 3 · 7/4 (六) — 金澤全日</span><span style="font-size:0.78em;opacity:.7;">免拉車免搬行李</span></div>
+<div class="day-body">
+<table>
+<tr><td colspan="5" style="padding:6px 8px;background:#f5e6a3;color:#7a6a1a;font-weight:700;font-size:0.88em;">早餐・咖啡 · 散步順路</td></tr>
+<tr style="background:#fffbe6;">
+<td colspan="5" style="padding:5px 8px;color:#8a6a00;font-size:0.82em;border-bottom:1px dashed #e0d080;">
+⏰ 金澤咖啡店大多8:00開，從飯店出發順路吃早餐再開始觀光
+</td>
+</tr>
+<tr>
+<td style="width:24px;text-align:center;"><input type="checkbox"></td>
+<td style="width:15%;" class="resto-name">Pessoa Coffee Roasters <a href="https://www.google.com/maps/search/Pessoa+Coffee+Roasters+金沢" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td style="width:22%;">自家焙煎咖啡</td>
+<td style="width:15%;"><b>¥500〜1,000</b></td>
+<td>新竪町商店街（近江町市場徒歩10〜15分）・淺焙單品豆・安靜空間・小紅書寫「近江町5分」但實際位置差10~15分</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">Le Musée de H Kanazawa <a href="https://www.google.com/maps/search/Le+Musée+de+H+Kanazawa" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>スイーツ・カフェ（甜點咖啡）</td>
+<td><b>¥1,500〜2,500</b></td>
+<td>石川縣立美術館内(兼六園真橫徒歩1分)・辻口博啓スイーツ百名店・僅7席・預約不可・10:00開・下午茶時段極易客滿・Tabelog 3.63</td>
+</tr>
+<tr><td colspan="5" style="padding:6px 8px;background:#f5e6a3;color:#7a6a1a;font-weight:700;font-size:0.88em;">午餐 · 近江町市場（從21世紀美術館下坡20分）</td></tr>
+<tr style="background:#fffbe6;">
+<td colspan="5" style="padding:5px 8px;color:#8a6a00;font-size:0.82em;border-bottom:1px dashed #e0d080;">
+⏰ 尾山神社⛩️ 就在兼六園→21世紀美術館順路上（免費・15分可逛・和洋中混合神門必看）。建議排在兼六園之後順便去
+</td>
+</tr>
+<tr style="background:#fffbe6;">
+<td colspan="5" style="padding:5px 8px;color:#8a6a00;font-size:0.82em;border-bottom:1px dashed #e0d080;">
+⏰ 7/4（六）商店9:00〜17:00全開，海鮮丼店大多 <b>11:00〜17:00</b> 營業。12:50到正值巔峰，建議一到先選餐廳卡位
+</td>
+</tr>
+<tr>
+<td style="width:24px;text-align:center;"><input type="checkbox"></td>
+<td style="width:15%;" class="resto-name">もりもり寿し 近江町店 <a href="https://www.google.com/maps/search/もりもり寿し+近江町店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td style="width:22%;">回転寿司（迴轉壽司）</td>
+<td style="width:15%;"><b>¥1,500〜3,000</b></td>
+<td>能登直送鮮魚・北陸產米酢醬油・8:00〜16:30・無休</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">近江町海鮮 丼家ひら井 <a href="https://www.google.com/maps/search/近江町海鮮+丼家ひら井" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>海鮮丼専門</td>
+<td><b>¥1,500〜2,500</b></td>
+<td>市場館(いちば館)2F・11:00〜17:00（最後點餐16:30）・排隊名店</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">市場めし あまつぼ <a href="https://www.google.com/maps/search/市場めし+あまつぼ" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>海鮮丼・金澤關東煮(おでん)</td>
+<td><b>¥1,500〜3,000</b></td>
+<td>8:00〜21:00・關東煮20種・親子友善・全天營業</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">近江町食堂 <a href="https://www.google.com/maps/search/近江町食堂" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>海鮮丼・加賀料理</td>
+<td><b>¥1,200〜2,500</b></td>
+<td>創業93年・菜單100種以上・家庭聚餐首選・10:30〜15:00 / 17:00〜22:00</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">いっぷく横丁 <a href="https://www.google.com/maps/search/いっぷく横丁" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>立ち食いフードコート（立食美食廣場）</td>
+<td><b>¥500〜2,000</b></td>
+<td>關東煮・海鮮燒烤(浜焼き)・地酒50種・9:00〜17:00・各自自由選擇</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">豆餅 すゞめ（鈴） <a href="https://www.google.com/maps/search/豆餅+すゞめ" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>名物甘味（烤糰子・豆餅）</td>
+<td><b>¥200〜600</b></td>
+<td>外帶・食後逛吃・週三週日休</td>
+</tr>
+<tr><td colspan="5" style="padding:6px 8px;background:#e8d5b0;color:#5a4a2a;font-weight:700;font-size:0.88em;">晚餐 · 金澤市區（香林坊・長町・站前）</td></tr>
+<tr style="background:#fff8ec;">
+<td colspan="5" style="padding:5px 8px;color:#7a5a2a;font-size:0.82em;border-bottom:1px dashed #d0c090;">
+⏰ 從武家屋敷（長町）散步回飯店途中可順路吃，或回站前覓食。今晚不開車可小酌
+</td>
+</tr>
+<tr>
+<td style="width:24px;text-align:center;"><input type="checkbox"></td>
+<td style="width:16%;" class="resto-name">AASHIRWAD（アシルワード） <a href="https://www.google.com/maps/search/AASHIRWAD+金沢" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td style="width:22%;">印度料理・尼泊爾料理</td>
+<td style="width:13%;"><b>¥1,350〜3,000</b></td>
+<td>金澤長町武家屋敷旁步行2分・米其林餐盤推薦・週一公休・📱小紅書「自宅咖喱研究所」大推</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">秋吉 香林坊店 <a href="https://www.google.com/maps/search/秋吉+香林坊店+金沢" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>燒鳥(焼き鳥)・串揚げ</td>
+<td><b>¥3,000〜4,000</b></td>
+<td>香林坊2-11-4（香林坊巴士站步行3分）・福井發祥燒鳥連鎖・串小多種類・招牌雞皮豬肝・一串約¥150〜250・兩人吃撐不到¥3,000・可預約(3名以上)・日曜休</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">居酒屋 花組 <a href="https://www.google.com/maps/search/居酒屋+花組+金沢" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>海鮮居酒屋</td>
+<td><b>¥5,000〜6,000</b></td>
+<td>木倉町1-5（香林坊巴士站步行3分）・古民家改裝・桶裝刺身(小¥3,982〜)・のどぐろ一本燒¥3,388・金澤おでん・完全個室(2F最大60人)・英語菜單・無休</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">三幸 みゆき <a href="https://www.google.com/maps/search/三幸+みゆき+金沢片町" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>おでん居酒屋（關東煮居酒屋）</td>
+<td><b>¥4,000〜6,000</b></td>
+<td>片町1-10-3（香林坊巴士站步行5分）・創業1967年人気名店・自家製白味噌+薄口醬油兩種湯頭・極度排隊(外待ち60分以上)・3名以上可預約(カウンター不可預約)・日祝休・Tabelog 3.82</td>
+</tr>
+<tr><td colspan="5" style="padding:6px 8px;background:#e8d5b0;color:#5a4a2a;font-weight:700;font-size:0.88em;">東茶屋街周邊 · 午餐・下午茶（散步順路）</td></tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">ちょう吉(Chou Kichi) <a href="https://www.google.com/maps/search/ちょう吉+金沢東山" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>燒鳥(焼き鳥)・親子丼</td>
+<td><b>午餐¥850〜1,000<br>晚餐¥6,000〜8,000</b></td>
+<td>東茶屋街小巷內・午餐只賣親子丼(炭烤雞肉+半熟蛋)・晚為燒鳥居酒屋・週日一休・Tabelog 3.57・📱小紅書「伍柒柒」大推</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">能登牛 ましば(Mashiba) <a href="https://www.google.com/maps/search/能登牛ましば+金沢東山" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>能登牛(炭火焼ひつまぶし)</td>
+<td><b>¥4,500〜6,000</b></td>
+<td>東茶屋街中心・築130年古民家改裝・完全預約制(TableCheck)・附和菓子おもてなし・中學生以下不可・現金不可(僅刷卡)・水木休・Tabelog 3.11・📱小紅書「天花板級能登牛」</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">Cafe たもん(Tamon) <a href="https://www.google.com/maps/search/Cafe+たもん+金沢東山" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>米粉パンケーキ（米粉鬆餅）・カフェ</td>
+<td><b>¥2,900〜3,500</b></td>
+<td>東茶屋街主通(橋爪門徒步1分)・築100年町家改裝・パンケーキ單品¥2,900偏貴但景色無價・08:00〜17:00・早餐時段人較少・TripAdvisor 4.2・無休</td>
+</tr>
+</table>
+</div></div>
+<div class="day-card day4">
+<div class="day-header"><span>Day 4 · 7/5 (日) — 金澤 → 白川鄉 → 高山</span><span style="font-size:0.78em;opacity:.8;">→120km</span></div>
+<div class="day-body">
+<table>
+<tr><td colspan="5" style="padding:6px 8px;background:#f0e0cc;color:#7a4d2a;font-weight:700;font-size:0.88em;border-radius:4px;">午餐 · 白川鄉</td></tr>
+<tr>
+<td style="width:24px;text-align:center;"><input type="checkbox"></td>
+<td style="width:15%;" class="resto-name">一茶 <a href="https://map.yahoo.co.jp/v3/place/zSok4tK4EtI" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td style="width:22%;">合掌民宿・山菜鄉土料理</td>
+<td style="width:14%;"><b>¥1,000~2,000</b></td>
+<td>合掌造民宿兼食堂，提供山菜樸素鄉土料理。巴士總站徒步8分，Tabelog 3.04，只收現金</td>
+</tr>
+<tr><td colspan="5" style="padding:6px 8px;background:#e8d5b0;color:#5a4a2a;font-weight:700;font-size:0.88em;">晚餐 · 高山</td></tr>
+<tr>
+<td style="width:24px;text-align:center;"><input type="checkbox"></td>
+<td style="width:15%;" class="resto-name">高山各式美食</td>
+<td style="width:22%;">飛驒牛壽司・燒肉・拉麵</td>
+<td style="width:14%;"><b>¥¥–¥¥¥</b></td>
+<td>早晚皆可品嘗高山精華</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">坂口屋 <a href="https://www.google.com/maps/search/坂口屋" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>飛驒牛壽司</td>
+<td><b>¥¥</b></td>
+<td>140年老鋪，飛驒牛壽司是高山代表性美食</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">丸明 / 味藏天國 <a href="https://www.google.com/maps/search/丸明+味藏天國" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>飛驒牛燒肉</td>
+<td><b>¥¥¥</b></td>
+<td>丸明和味藏天國都是飛驒牛燒肉名店，排隊長，建議提早或平日午餐</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">麺屋しらかわ(白川麵屋) <a href="https://www.google.com/maps/search/麺屋しらかわ" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>高山拉麵</td>
+<td><b>¥¥</b></td>
+<td>高山拉麵代表店，醬油雞湯清淡口味</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">Tama Curry 湯咖哩 <a href="https://www.google.com/maps/search/Tama+Curry+湯咖哩" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></td>
+<td>咖哩・湯咖哩</td>
+<td><b>¥¥</b></td>
+<td>評筆者評日本第一的湯咖哩</td>
+</tr>
+<tr>
+<td style="text-align:center;"><input type="checkbox"></td>
+<td class="resto-name">BOSS超市 / Family store Sato</td>
+<td>超市購物・自炊</td>
+<td><b>¥</b></td>
+<td>飛驒牛比專賣店便宜，另有酒、菜、壽司、刺身、炸物，回旅館自炊。BOSS / 全家便利商店等都行</td>
+</tr>
+</table>
+</div></div>
+<div class="day-card day5">
+<div class="day-header"><span>Day 5 · 7/6 (一) — 高山（依天氣三選一）</span><span style="font-size:0.78em;opacity:.8;">A 上高地 / B 高山人文 / C 暴雨</span></div>
+<div class="day-body">
+<table>
+<tr><td colspan="2" style="padding:2px 0 6px 0;color:#888;font-size:0.82em;">Plan A 上高地 · 午餐</td></tr>
+<tr>
+<td><span class="resto-name">河童橋周邊店鋪</span><span class="price price-yen2">¥¥</span></td>
+<td><span class="cuisine">日式定食·蕎麥麵·咖喱</span>
+<div class="desc">在河童橋旁的小店吃午餐，邊看穗高連峰美景</div></td>
+</tr>
+<tr><td colspan="2" style="padding:6px 0 6px 0;color:#888;font-size:0.82em;">Plan A 晚餐</td></tr>
+<tr>
+<td><span class="resto-name">味藏天國 / 丸明 <a href="https://www.google.com/maps/search/味藏天國+丸明" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen3">¥¥¥</span></td>
+<td><span class="cuisine">飛驒牛燒肉</span>
+<div class="desc">外食選擇，均為飛驒牛燒肉名店</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">BOSS超市 自炊</span><span class="price price-yen1">¥</span></td>
+<td><span class="cuisine">超市購物·自炊</span>
+<div class="desc">買飛驒牛回民宿自炊，可加購酒、菜、壽司、刺身、炸物</div></td>
+</tr>
+<tr><td colspan="2" style="padding:6px 0 6px 0;color:#888;font-size:0.82em;">Plan B 高山人文 · 早餐·午餐</td></tr>
+<tr>
+<td><span class="resto-name">宮川朝市</span><span class="price price-yen1">¥–¥¥</span></td>
+<td><span class="cuisine">飛驒牛串、地元小吃</span>
+<div class="desc">朝市當早餐，飛驒牛串燒是必吃，還有各式地元水果、野菜</div>
+<div class="notes">08:00~12:00開市</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">肉の匠家 <a href="https://www.google.com/maps/search/肉の匠家" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen3">¥¥¥</span></td>
+<td><span class="cuisine">飛驒牛燒肉</span>
+<div class="desc">追加飛驒牛燒肉選擇</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">三百兩 <a href="https://www.google.com/maps/search/三百兩" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen2">¥¥</span></td>
+<td><span class="cuisine">居酒屋·雞肉料理</span>
+<div class="desc">高山特有雞肉料理居酒屋</div></td>
+</tr>
+<tr><td colspan="2" style="padding:6px 0 6px 0;color:#888;font-size:0.82em;">Plan B 飛驒古川（🚗20分）· 小吃</td></tr>
+<tr>
+<td><span class="resto-name">岡田屋 <a href="https://www.google.com/maps/search/岡田屋+飛驒古川" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price">¥350</span></td>
+<td><span class="cuisine">飛驒牛串</span>
+<div class="desc">古川祭會館旁，現烤飛驒牛串，醬油焦香</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">飛騨コロッケ本舗 <a href="https://www.google.com/maps/search/飛騨コロッケ本舗" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price">¥400</span></td>
+<td><span class="cuisine">飛驒牛可樂餅</span>
+<div class="desc">現炸，使用飛驒牛肉・北海道馬鈴薯</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">牧成舎</span><span class="price">¥450</span></td>
+<td><span class="cuisine">最中冰淇淋</span>
+<div class="desc">百年乳業，手燒最中皮+濃厚冰淇淋，烤20秒更佳</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">大久保製菓舖</span><span class="price">¥300</span></td>
+<td><span class="cuisine">櫻花銅鑼燒</span>
+<div class="desc">120年老店，外皮蒸製鬆軟，夏季限定銅鑼燒冰淇淋</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">味処古川</span><span class="price">¥350</span></td>
+<td><span class="cuisine">五平餅</span>
+<div class="desc">你的名字。聖地美食，味噌烤飯糰</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">FabCafe Hida</span><span class="price">¥450</span></td>
+<td><span class="cuisine">飛驒可麗露・クロモジ咖啡</span>
+<div class="desc">古民家改造咖啡廳，可麗露使用牧成舎牛乳</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">日根野美術館＆咖啡廳</span><span class="price">¥700</span></td>
+<td><span class="cuisine">烤起司蛋糕（含咖啡）</span>
+<div class="desc">50年英國配方，賞美術品+下午茶</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">西洋膳処まえだ</span><span class="price">¥1,500~</span></td>
+<td><span class="cuisine">飛驒牛午餐</span>
+<div class="desc">地元人氣飛驒牛定食</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">福全寺蕎麥</span><span class="price">¥1,000~</span></td>
+<td><span class="cuisine">手打蕎麥</span>
+<div class="desc">飛驒流葉產蕎麥粉，另有飛驒牛コロッケ蕎麥</div></td>
+</tr>
+</table>
+</div></div>
+<div class="day-card day6">
+<div class="day-header"><span>Day 6 · 7/7 (二) — 高山 → 名古屋</span><span style="font-size:0.78em;opacity:.8;">最後租車日</span></div>
+<div class="day-body">
+<table>
+<tr><td colspan="2" style="padding:2px 0 6px 0;color:#888;font-size:0.82em;">Plan A 朝市+郡上</td></tr>
+<tr>
+<td><span class="resto-name">宮川朝市</span><span class="price price-yen1">¥–¥¥</span></td>
+<td><span class="cuisine">飛驒牛串、地元小吃</span>
+<div class="desc">朝市當早餐，飛驒牛串燒起床</div>
+<div class="notes">08:00~12:00開市</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">郡上八幡 香魚料理 <a href="https://www.google.com/maps/search/郡上八幡+香魚料理" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen2">¥¥</span></td>
+<td><span class="cuisine">香魚料理</span>
+<div class="desc">郡上八幡的清流長良川產香魚，可在老街茶屋品嘗</div></td>
+</tr>
+<tr><td colspan="2" style="padding:6px 0 6px 0;color:#888;font-size:0.82em;">Plan B 補走上高地 · 午餐</td></tr>
+<tr>
+<td><span class="resto-name">河童橋周邊</span><span class="price price-yen2">¥¥</span></td>
+<td><span class="cuisine">日式定食</span>
+<div class="desc">同 Day5 Plan A 的上高地午餐</div></td>
+</tr>
+<tr><td colspan="2" style="padding:6px 0 6px 0;color:#888;font-size:0.82em;">晚餐 · 名古屋</td></tr>
+<tr>
+<td><span class="resto-name">名古屋各式晚餐</span><span class="price price-yen2">¥¥–¥¥¥</span></td>
+<td><span class="cuisine">各式日式料理</span>
+<div class="desc">還車後在金山站周邊就餐，可回味 Day1 的名店或嘗試新店</div></td>
+</tr>
+<tr><td colspan="2" style="padding:6px 0 6px 0;color:#888;font-size:0.82em;">沿途道之驛</td></tr>
+<tr>
+<td><span class="resto-name">美並道之驛 <a href="https://www.google.com/maps/search/美並道之驛" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen1">¥–¥¥</span></td>
+<td><span class="cuisine">地元美食</span>
+<div class="desc">長良川鵜飼、清流小吃</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">清流の里しろとり <a href="https://www.google.com/maps/search/清流の里しろとり" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen1">¥</span></td>
+<td><span class="cuisine">地場野菜、手打蕎麥</span>
+<div class="desc">地場野菜、手打蕎麥等精緻地元美食</div></td>
+</tr>
+</table>
+</div></div>
+<div class="day-card day7">
+<div class="day-header"><span>Day 7 · 7/8 (三) — 名古屋全日</span><span style="font-size:0.78em;opacity:.8;">無車·電車移動</span></div>
+<div class="day-body">
+<table>
+<tr><td colspan="2" style="padding:2px 0 6px 0;color:#888;font-size:0.82em;">午餐 · 犬山城下町</td></tr>
+<tr>
+<td><span class="resto-name">犬山城下町美食</span><span class="price price-yen1">¥–¥¥</span></td>
+<td><span class="cuisine">地元小吃·山產料理</span>
+<div class="desc">犬山城下町老街有射擊、團子、雜貨等小吃可選</div></td>
+</tr>
+<tr><td colspan="2" style="padding:6px 0 6px 0;color:#888;font-size:0.82em;">名古屋站周邊（則武之森AEON）· 小紅書網友推薦</td></tr>
+<tr>
+<td><span class="resto-name">柳橋市場 海鮮丼 <a href="https://www.google.com/maps/search/柳橋市場+海鮮丼" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen2">¥¥</span></td>
+<td><span class="cuisine">海鮮丼</span>
+<div class="desc">柳橋市場隱藏版海鮮丼，新鮮料足，米飯吸滿海鮮湯汁，本地人愛店</div>
+<div class="notes">📱 小紅書「我是YANG呀」大推 · 近名古屋站</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">魚椿 立吞壽司 <a href="https://www.google.com/maps/search/魚椿+立吞壽司" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen2">¥¥</span></td>
+<td><span class="cuisine">立吞壽司·清酒</span>
+<div class="desc">柳橋市場附近的立吞壽司，站在吧台看師傅現捏甜蝦、金槍魚，配一杯清酒超享受</div>
+<div class="notes">當地人愛店，可用破英文跟師傅聊天</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">まるや本店 JR名古屋駅店 <a href="https://www.google.com/maps/search/まるや本店+JR名古屋駅店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen3">¥¥¥</span></td>
+<td><span class="cuisine">鰻魚三吃</span>
+<div class="desc">JR名古屋站南剪票口步行1分鐘，炭烤鰻魚外酥內嫩，秘傳醬汁採用160年傳統工藝醬油</div>
+<div class="notes">等位比蓬萊軒快，品質在線</div></td>
+</tr>
+<tr><td colspan="2" style="padding:6px 0 6px 0;color:#888;font-size:0.82em;">下午茶 · 榮商圈</td></tr>
+<tr>
+<td><span class="resto-name">HARBS 水果千層蛋糕 <a href="https://www.google.com/maps/search/HARBS+水果千層蛋糕" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen2">¥¥</span></td>
+<td><span class="cuisine">甜品·千層蛋糕</span>
+<div class="desc">榮商圈的名古屋經典下午茶，水果千層蛋糕是招牌</div></td>
+</tr>
+<tr><td colspan="2" style="padding:6px 0 6px 0;color:#888;font-size:0.82em;">大須觀音商店街</td></tr>
+<tr>
+<td><span class="resto-name">醬油糰子 <a href="https://www.google.com/maps/search/醬油糰子" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen1">¥</span></td>
+<td><span class="cuisine">日式糰子</span>
+<div class="desc">大須觀音商店街的經典小吃，約100圓</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">矢場とん 大須店 <a href="https://www.google.com/maps/search/矢場とん+大須店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen2">¥¥</span></td>
+<td><span class="cuisine">味噌豬排</span>
+<div class="desc">名古屋名物味噌豬排名店，大須分店也很方便</div></td>
+</tr>
+<tr><td colspan="2" style="padding:6px 0 6px 0;color:#888;font-size:0.82em;">晚餐 · 名古屋站周邊</td></tr>
+<tr>
+<td><span class="resto-name">焼き鳥 きんざん 名駅4丁目店 <a href="https://www.google.com/maps/search/焼き鳥+きんざん+名駅4丁目店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen2">¥¥</span></td>
+<td><span class="cuisine">燒鳥·名古屋交趾雞</span>
+<div class="desc">名古屋站步行5分，本地人愛店，火候恰到好處，雞皮烤得酥脆，人均約¥4,500</div>
+<div class="notes">📍 泰生大樓5F · 名駅4-4-18 · 17:00–24:00</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">和牛壽喜燒（慶功宴） <a href="https://www.google.com/maps/search/和牛壽喜燒" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen3">¥¥¥</span></td>
+<td><span class="cuisine">和牛壽喜燒</span>
+<div class="desc">畢業慶功宴，推薦訂位店家</div></td>
+</tr>
+<tr><td colspan="2" style="padding:6px 0 6px 0;color:#888;font-size:0.82em;">Plan B 雨天備案</td></tr>
+<tr>
+<td><span class="resto-name">三越百貨地下美食街</span><span class="price price-yen2">¥¥–¥¥¥</span></td>
+<td><span class="cuisine">各式日式料理</span>
+<div class="desc">完全室內，雨天多種選擇，同樓層也有HARBS</div></td>
+</tr>
+</table>
+</div></div>
+<div class="day-card day8">
+<div class="day-header"><span>Day 8 · 7/9 (四) — 機場 → 台北</span><span style="font-size:0.78em;opacity:.8;">→CX531 16:40</span></div>
+<div class="day-body">
+<table>
+<tr><td colspan="2" style="padding:2px 0 6px 0;color:#888;font-size:0.82em;">午餐 · FLIGHT OF DREAMS</td></tr>
+<tr>
+<td><span class="resto-name">Seattle Terrace <a href="https://www.google.com/maps/search/Seattle+Terrace" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen1">¥–¥¥</span></td>
+<td><span class="cuisine">咖啡·輕食</span>
+<div class="desc">787原型機展示地，座位可看飛機起飛，母親可坐著喝咖啡看飛機</div>
+<div class="notes">FLIGHT OF DREAMS 全室內免費，機場步行5–10分</div></td>
+</tr>
+<tr><td colspan="2" style="padding:6px 0 6px 0;color:#888;font-size:0.82em;">機場4F 磚瓦街(レンガ通り) · 午餐或最後一餐</td></tr>
+<tr>
+<td><span class="resto-name">まるや本店 空港店 <a href="https://www.google.com/maps/search/まるや本店+空港店" target="_blank" style="text-decoration:none;font-size:0.85em;">🗺️</a></span><span class="price price-yen3">¥¥¥</span></td>
+<td><span class="cuisine">鰻魚三吃</span>
+<div class="desc">機場4F磚瓦街(レンガ通り)，旅程完美句點。秘傳醬汁與嚴選鰻魚，預算¥4,000~5,000</div>
+<div class="notes">10:00–21:30 · 可訂位 · 有兒童菜單</div></td>
+</tr>
+<tr><td colspan="2" style="padding:6px 0 6px 0;color:#888;font-size:0.82em;">機場4F商店街 · 最後採買</td></tr>
+<tr>
+<td><span class="resto-name">ちんや(蝦餅)</span><span class="price price-yen1">¥</span></td>
+<td><span class="cuisine">名產·蝦餅</span>
+<div class="desc">名古屋機場必買名產，餅乾蝦味拉麵風格</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">赤福</span><span class="price price-yen1">¥</span></td>
+<td><span class="cuisine">名產·紅豆麻糬</span>
+<div class="desc">三重縣經典名產，紅豆麻糬</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">名古屋交趾雞(名古屋コーチン)</span><span class="price price-yen1">¥</span></td>
+<td><span class="cuisine">名產·雞肉</span>
+<div class="desc">名古屋特產飼養雞類配溫泉飯等</div></td>
+</tr>
+<tr>
+<td><span class="resto-name">鯱瓦酥餅(しゃちほこサブレ)</span><span class="price price-yen1">¥</span></td>
+<td><span class="cuisine">名產·酥餅</span>
+<div class="desc">名古屋城虎魚造型酥餅</div></td>
+</tr>
+</table>
+</div></div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧳 昇龍道 8 天 7 夜 — 行李檢查清單</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', 'Noto Sans TC', sans-serif; background: #f5f5f5; color: #333; padding: 20px; }
+  .container { max-width: 800px; margin: 0 auto; }
+  h1 { text-align: center; font-size: 1.5em; margin-bottom: 2px; }
+  .subtitle { text-align: center; color: #666; margin-bottom: 20px; font-size: 0.85em; }
+  .cat { background: #fff; border-radius: 10px; margin-bottom: 14px; padding: 14px 18px; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+  .cat h2 { font-size: 1em; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .cat h2 .badge { font-size: 0.65em; background: #e8e8e8; color: #888; padding: 2px 8px; border-radius: 10px; font-weight: 400; }
+  .subcat { margin: 6px 0 4px 0; font-size: 0.88em; color: #888; font-weight: 600; padding-left: 4px; }
+  .item { display: flex; align-items: flex-start; gap: 8px; padding: 3px 0; font-size: 0.88em; }
+  .item input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; accent-color: #3498db; cursor: pointer; flex-shrink: 0; }
+  .item label { flex: 1; cursor: pointer; line-height: 1.5; }
+  .item input:checked + label { text-decoration: line-through; color: #aaa; }
+  .item .note { color: #999; font-size: 0.85em; }
+  .highlight-item { background: #fef9e7; border-radius: 6px; padding: 4px 10px; margin: 2px 0; }
+  .highlight-item label { font-weight: 600; }
+  .sep { border: none; border-top: 1px dashed #ddd; margin: 8px 0; }
+  .cat-footer { margin-top: 16px; padding-top: 12px; border-top: 1px solid #eee; font-size: 0.82em; color: #888; text-align: center; }
+  @media print {
+    body { padding: 0; background: #fff; }
+    .cat { break-inside: avoid; box-shadow: none; border: 1px solid #eee; }
+    .item input[type="checkbox"] { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🧳 昇龍道 8 天 7 夜 — 行李檢查清單</h1>
+<p class="subtitle">7/2(四)~7/9(四) ｜ 名古屋 33~35°C ｜ 高山/上高地 25~28°C</p>
+
+<div class="cat">
+<h2>📛 證件與錢包</h2>
+<div class="item highlight-item"><input type="checkbox" id="d1"><label for="d1">台灣駕照正本 <span class="note">（取車必帶）</span></label></div>
+<div class="item highlight-item"><input type="checkbox" id="d2"><label for="d2">日文譯本 <span class="note">（監理站申請）</span></label></div>
+<div class="item"><input type="checkbox" id="d3"><label for="d3">護照（有效期6個月以上）</label></div>
+<div class="item"><input type="checkbox" id="d4"><label for="d4">訂位代碼 FR26M5 截圖</label></div>
+<div class="item"><input type="checkbox" id="d5"><label for="d5">NIPPON 租車預約確認單（Tabirai）</label></div>
+<div class="item"><input type="checkbox" id="d6"><label for="d6">各飯店預訂確認單（Agoda / Booking）</label></div>
+<div class="item"><input type="checkbox" id="d7"><label for="d7">日幣現金 8~10 萬</label></div>
+<div class="item"><input type="checkbox" id="d8"><label for="d8">信用卡（VISA/Mastercard/JCB）</label></div>
+<div class="item"><input type="checkbox" id="d9"><label for="d9">西瓜卡或ICOCA（備用交通）</label></div>
+<div class="item"><input type="checkbox" id="d10"><label for="d10">保險卡 / 旅遊保險資料</label></div>
+</div>
+
+<div class="cat">
+<h2>👕 衣物（每人） <span class="badge">各自準備</span></h2>
+<div class="subcat">上衣</div>
+<div class="item"><input type="checkbox" id="c1"><label for="c1">短袖 T-Shirt × 4~5 件</label></div>
+<div class="item"><input type="checkbox" id="c2"><label for="c2">薄長袖 × 1 件 <span class="note">（上高地/車上防曬）</span></label></div>
+<div class="item"><input type="checkbox" id="c3"><label for="c3">防曬外套 or 薄風衣</label></div>
+<div class="item"><input type="checkbox" id="c4"><label for="c4">輕便雨衣 or 折疊傘</label></div>
+<div class="subcat">下身</div>
+<div class="item"><input type="checkbox" id="c5"><label for="c5">短褲 × 2~3 件</label></div>
+<div class="item"><input type="checkbox" id="c6"><label for="c6">長褲 × 1~2 件 <span class="note">（上山/晚間）</span></label></div>
+<div class="item"><input type="checkbox" id="c7"><label for="c7">連身裙（女性自由搭配）</label></div>
+<div class="subcat">鞋襪</div>
+<div class="item highlight-item"><input type="checkbox" id="c8"><label for="c8">好走的運動鞋 <span class="note">（上高地健行必備）</span></label></div>
+<div class="item"><input type="checkbox" id="c9"><label for="c9">涼鞋 / 拖鞋 <span class="note">（飯店、溫泉用）</span></label></div>
+<div class="item"><input type="checkbox" id="c10"><label for="c10">襪子 × 4~5 雙</label></div>
+<div class="subcat">其他</div>
+<div class="item"><input type="checkbox" id="c11"><label for="c11">內衣褲 × 天數</label></div>
+<div class="item"><input type="checkbox" id="c12"><label for="c12">睡衣</label></div>
+<div class="item"><input type="checkbox" id="c13"><label for="c13">泳衣 <span class="note">（飯店溫泉用）</span></label></div>
+<div class="item"><input type="checkbox" id="c14"><label for="c14">薄圍巾 / 披肩 <span class="note">（母親車上防冷氣）</span></label></div>
+</div>
+
+<div class="cat">
+<h2>🪥 盥洗與個人用品</h2>
+<div class="item"><input type="checkbox" id="t1"><label for="t1">牙刷 / 牙膏</label></div>
+<div class="item"><input type="checkbox" id="t2"><label for="t2">洗面乳 / 保養品</label></div>
+<div class="item highlight-item"><input type="checkbox" id="t3"><label for="t3">防曬乳 <span class="note">（高係數，7月必備！）</span></label></div>
+<div class="item"><input type="checkbox" id="t4"><label for="t4">隱形眼鏡 + 藥水</label></div>
+<div class="item"><input type="checkbox" id="t5"><label for="t5">眼鏡 + 太陽眼鏡</label></div>
+<div class="item"><input type="checkbox" id="t6"><label for="t6">梳子 / 髮圈</label></div>
+<div class="item"><input type="checkbox" id="t7"><label for="t7">女性生理用品</label></div>
+<div class="item"><input type="checkbox" id="t8"><label for="t8">刮鬍刀</label></div>
+<div class="item"><input type="checkbox" id="t9"><label for="t9">棉花棒 / 小包面紙</label></div>
+</div>
+
+<div class="cat">
+<h2>💊 醫藥與保健</h2>
+<div class="item"><input type="checkbox" id="m1"><label for="m1">暈車藥 <span class="note">（母親長途車程用）</span></label></div>
+<div class="item"><input type="checkbox" id="m2"><label for="m2">腸胃藥 / 正露丸</label></div>
+<div class="item"><input type="checkbox" id="m3"><label for="m3">感冒藥 / 退燒藥</label></div>
+<div class="item"><input type="checkbox" id="m4"><label for="m4">OK繃 / 液體絆創膏</label></div>
+<div class="item"><input type="checkbox" id="m5"><label for="m5">肌肉痠痛貼布 <span class="note">（開車+走路用）</span></label></div>
+<div class="item"><input type="checkbox" id="m6"><label for="m6">蚊蟲叮咬止癢藥</label></div>
+<div class="item highlight-item"><input type="checkbox" id="m7"><label for="m7">隨身摺疊椅墊 <span class="note">（母親排隊/休息用）</span></label></div>
+<div class="item"><input type="checkbox" id="m8"><label for="m8">個人慢性病藥 <span class="note">（備足天數）</span></label></div>
+</div>
+
+<div class="cat">
+<h2>📱 3C 與網路</h2>
+<div class="item"><input type="checkbox" id="e1"><label for="e1">手機 + 充電線</label></div>
+<div class="item highlight-item"><input type="checkbox" id="e2"><label for="e2">行動電源 <span class="note">（導航+拍照超耗電）</span></label></div>
+<div class="item"><input type="checkbox" id="e3"><label for="e3">日本 SIM 卡 / eSIM</label></div>
+<div class="item"><input type="checkbox" id="e4"><label for="e4">車充 <span class="note">（點菸器轉 USB）</span></label></div>
+<div class="item"><input type="checkbox" id="e5"><label for="e5">相機 / GoPro</label></div>
+<div class="item"><input type="checkbox" id="e6"><label for="e6">耳機 / 耳塞 <span class="note">（車上休息用）</span></label></div>
+</div>
+
+<div class="cat">
+<h2>🚗 自駕專用</h2>
+<div class="item"><input type="checkbox" id="dr1"><label for="dr1">ETC卡 <span class="note">（確認租車方案是否含）</span></label></div>
+<div class="item"><input type="checkbox" id="dr2"><label for="dr2">手機支架 <span class="note">（導航用）</span></label></div>
+<div class="item"><input type="checkbox" id="dr3"><label for="dr3">Google Maps 離線地圖 <span class="note">（預載區域）</span></label></div>
+<div class="item"><input type="checkbox" id="dr4"><label for="dr4">車用垃圾袋 <span class="note">（保持車內整潔）</span></label></div>
+<div class="item"><input type="checkbox" id="dr5"><label for="dr5">墨鏡夾片 <span class="note">（駕駛用）</span></label></div>
+<div class="item"><input type="checkbox" id="dr6"><label for="dr6">腰靠墊 <span class="note">（駕駛長途用）</span></label></div>
+</div>
+
+<div class="cat">
+<h2>🧴 其他雜項</h2>
+<div class="item"><input type="checkbox" id="o1"><label for="o1">保溫瓶 <span class="note">（各休息站可裝水）</span></label></div>
+<div class="item"><input type="checkbox" id="o2"><label for="o2">零食 <span class="note">（車上充飢用）</span></label></div>
+<div class="item"><input type="checkbox" id="o3"><label for="o3">折疊購物袋 × 2 <span class="note">（採買伴手禮）</span></label></div>
+<div class="item"><input type="checkbox" id="o4"><label for="o4">小型後背包 <span class="note">（一日遊輕裝用）</span></label></div>
+<div class="item"><input type="checkbox" id="o5"><label for="o5">濕紙巾 / 乾洗手</label></div>
+<div class="item"><input type="checkbox" id="o6"><label for="o6">旅遊枕 <span class="note">（車上/飛機用）</span></label></div>
+<div class="item"><input type="checkbox" id="o7"><label for="o7">行李秤 <span class="note">（避免超重）</span></label></div>
+</div>
+
+<div class="cat" style="border-left: 4px solid #e74c3c;">
+<h2>👵 母親專用提醒</h2>
+<div class="item"><input type="checkbox" id="gm1"><label for="gm1">折疊椅墊</label></div>
+<div class="item"><input type="checkbox" id="gm2"><label for="gm2">薄外套 <span class="note">（車上冷氣用）</span></label></div>
+<div class="item"><input type="checkbox" id="gm3"><label for="gm3">個人隨身藥物</label></div>
+<div class="item"><input type="checkbox" id="gm4"><label for="gm4">舒適步行鞋</label></div>
+<div class="item"><input type="checkbox" id="gm5"><label for="gm5">小型手電筒 <span class="note">（上高地/夜間）</span></label></div>
+</div>
+
+<div class="cat" style="border-left: 4px solid #3498db;">
+<h2>🧑‍🤝‍🧑 青少年專區</h2>
+<div class="item"><input type="checkbox" id="y1"><label for="y1">手機充電線 + 行動電源</label></div>
+<div class="item"><input type="checkbox" id="y2"><label for="y2">耳機</label></div>
+<div class="item"><input type="checkbox" id="y3"><label for="y3">相機 / 拍立得</label></div>
+<div class="item"><input type="checkbox" id="y4"><label for="y4">零錢包 <span class="note">（買御守、小吃用）</span></label></div>
+</div>
+
+<div class="cat" style="border-left: 4px solid #9b59b6;">
+<h2>✈️ 登機隨身（7/9 回程）</h2>
+<div class="item"><input type="checkbox" id="rt1"><label for="rt1">護照</label></div>
+<div class="item"><input type="checkbox" id="rt2"><label for="rt2">手機 + 行動電源</label></div>
+<div class="item"><input type="checkbox" id="rt3"><label for="rt3">免稅品提領單</label></div>
+<div class="item"><input type="checkbox" id="rt4"><label for="rt4">筆 <span class="note">（填寫入境單/稅單）</span></label></div>
+<div class="item"><input type="checkbox" id="rt5"><label for="rt5">外套 <span class="note">（飛機上冷）</span></label></div>
+</div>
+
+<div class="cat-footer">
+💡 收納建議：每人一咖 26 吋內行李箱，隨身後背包一個。廂型車後廂可疊放 3~4 咖，其餘放第三排座椅前空間。
+</div>
+</div>
+</body>
+</html>
